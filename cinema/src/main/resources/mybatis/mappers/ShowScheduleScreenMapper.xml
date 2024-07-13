@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.project.cinema.mapper.ShowScheduleScreenMapper">
+
+ 	<select id="countRegionByNo" parameterType="int" resultType="int">
+ 		SELECT COUNT(*) AS total
+		FROM region r, theater t
+		WHERE r.region_no = t.region_no
+		AND r.region_no = #{value}
+ 	</select>
+ 	
+</mapper>
