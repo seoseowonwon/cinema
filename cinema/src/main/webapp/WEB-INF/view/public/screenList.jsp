@@ -15,6 +15,7 @@
   	<link rel="icon" href="/resources/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
+	<div class="wrap"></div>
     <div class="container" style="width: 1250px;">
         <div class="row mb-3">
             <div class="col">
@@ -57,7 +58,6 @@
                     </div>
                     <div class="movie-img">
                         <div class="choice-list" id="choiceMovieList-0">
-                        	<img id="picture" alt="no-pricture" src="/resources/images/movie/no-graph03.jpg">
                         	<p id="picture-name">영화를 클릭하세요</p>
                         </div>
                     </div>
@@ -167,25 +167,42 @@
 						var $openDt = $(o).find("openDt").text();// 영화 개봉일
 						var $salesAcc = $(o).find("salesAcc").text();//누적 매출액
 						var $audiAcc = $(o).find("audiAcc").text(); //누적 관객수
+						console.log("movieNm: "+$movieNm);
 						
-						
-						
-						
-						//<tbody><tr><td>태그안에 파싱하여 추출된 데이터 넣기
-						var row = $("<tr/>").append( // .append는 새로운 구문 추가하는 것
-								
-								$("<td/>").text($rank), // <td></td>안에 $rank의 값 집어 넣기
-								$("<td/>").text($movieNm),
-								$("<td/>").text($openDt),
-								$("<td/>").text($salesAcc),
-								$("<td/>").text($audiAcc)
-						);
-		
-						tbody.append(row); // 데이터가 입력된 한 행을 tbody에 반복해서 추가
-		
+						$.ajax({
+							url : "https://api.themoviedb.org/3/search/movie",
+							method: "GET",
+							data: {
+								api_key: '713076743ee17129fda347af138c628a',
+	                            query: $movieNm,
+	                            language: 'ko-KR'
+							},
+							success : function(tmdbData){
+								console.log('TMDB API 응답:', tmdbData);
+								if(tmdbData) { // 존재한다면
+									var movie = tmdbData.results[0];
+								 	var posterPath = movie.poster_path;
+	                                var title = movie.title;
+	                                console.log("movie:", movie);
+	                                console.log("posterPath:", posterPath);
+	                                console.log("title:", title);
+	                                // 포스터 이미지 URL
+	                                var posterUrl = "https://image.tmdb.org/t/p/w500"+posterPath;
+	                                console.log("posterUrl:",posterUrl);
+	                              //<tbody><tr><td>태그안에 파싱하여 추출된 데이터 넣기
+	        						var row = $("<tr/>").append( // .append는 새로운 구문 추가하는 것
+	        							$("<td/>").text($rank), // <td></td>안에 $rank의 값 집어 넣기
+	        							$("<td/>").text($movieNm),
+	        							$("<td/>").text($openDt),
+	        							$("<td/>").text($salesAcc),
+	        							$("<td/>").text($audiAcc),
+	        						    $("<td/>").append($("<img>").attr("src", posterUrl).attr("alt", title).css("max-width", "100px"))
+	        						);
+	        						tbody.append(row); // 데이터가 입력된 한 행을 tbody에 반복해서 추가
+								}
+							}
+						})
 					});// end of each 
-					
-					
 					table.append(thead); // 테이블에 thead추가
 					table.append(tbody); // 테이블에 tbody추가
 					$(".wrap").append(table); // class wrap에 만들어진 table을 추가 
@@ -313,7 +330,7 @@
 			let valueNo = $('button.movie-button.active').val(); // active인 movie-button 요소의 value 저장
 			let texts = $('button.movie-button.active').text(); // active인 내용을 변수에 저장
 			let path = '${param.no}' 
-			let detailUrl = 'https://api.themoviedb.org/3/movie/'+ path;
+			let detailUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=713076743ee17129fda347af138c628a&language=ko-KR&region=KR&sort_by=popularity.desc&primary_release_date.lte=2024-07-14'+ path;
 			$('#choiceMovieList-0').css('display','flex');
 			$.ajax({
 				type:'get',

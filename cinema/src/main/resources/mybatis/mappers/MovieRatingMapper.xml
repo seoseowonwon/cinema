@@ -7,14 +7,14 @@
 	 -->
 	 
 	 <select id="getAllList" resultType="com.project.cinema.dto.MovieRatingDto">
-	 	select distinct
-	 		r.movie_rating_no as ratingNo , 
-	 		r.movie_rating_name as ratingName ,
-	 		r.movie_rating_image_url as ratingImageURL ,
-	 		m.movie_no as movieNo ,
-	 		m.movie_name as movieName
-	 	from movie m, movie_rating r, show_schedule sc
-	 	where m.movie_rating_no = r.movie_rating_no
-	 	and sc.movie_no = m.movie_no
+	 	SELECT distinct
+	 		r.movie_rating_no AS ratingNo , 
+	 		r.movie_rating_name AS ratingName ,
+	 		r.movie_rating_image_url AS ratingImageURL ,
+	 		m.movie_no AS movieNo ,
+	 		m.movie_name AS movieName
+	 	FROM movie m, movie_rating r, show_schedule sc
+	 	WHERE m.movie_rating_no = r.movie_rating_no
+	 	AND sc.movie_no = m.movie_no
 	 </select>
 </mapper>

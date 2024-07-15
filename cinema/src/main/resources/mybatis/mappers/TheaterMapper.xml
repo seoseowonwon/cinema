@@ -3,10 +3,10 @@
 <mapper namespace="com.project.cinema.mapper.TheaterMapper">
 	
 	<select id="getAllRegion" resultType="com.project.cinema.vo.Region">
-		select
-			region_no	as no,
-			region_name as name
-		from
+		SELECT
+			region_no	AS no,
+			region_name AS name
+		FROM
 			region
 	</select>
 	

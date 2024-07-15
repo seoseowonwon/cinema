@@ -14,10 +14,10 @@ import com.project.cinema.mapper.MovieRatingMapper;
 public class MovieRatingService {
 
 	@Autowired
-	private MovieRatingMapper movieRatingDto;
+	private MovieRatingMapper movieRatingMapper;
 
 	public List<MovieRatingDto> getAllList(){
-		return movieRatingDto.getAllList();
+		return movieRatingMapper.getAllList();
 	}
 	
 }
