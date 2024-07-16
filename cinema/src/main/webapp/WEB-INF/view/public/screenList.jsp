@@ -115,6 +115,7 @@
       	<input type="hidden" name="showScheduleNo" value="" />
       </form>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	var dt = new Date();
 	
@@ -141,9 +142,124 @@
 	// ex) 20240709
 	var result = year + month + day;
 	
-	$(function(data){
+	$(function(){
+	    var apiKey = '713076743ee17129fda347af138c628a';
+	    var gteDate = '2024-06-15'; // 2024-06-15이때부터 
+	    var lteDate = '2024-08-15'; // 2024-08-15까지 
+	    var language = 'ko-KR';
+
+	    // TMDB API 호출
+	    $.ajax({
+	        url: "https://api.themoviedb.org/3/discover/movie",
+	        dataType: 'json',
+	        data: {
+	            api_key: apiKey,
+	            'primary_release_date.gte': gteDate,
+	            'primary_release_date.lte': lteDate,
+	            video: false, // 극장 개봉 영화만 필터링
+	            language: language
+	            
+	        },
+	        success: function(tmdbData) {
+	            console.log('TMDB API 확인:', tmdbData);
+	            if (tmdbData && tmdbData.results.length > 0) { // 데이터가 존재한다면 실행 
+	                var table = $("<table/>").attr("class", "table"); // 부트스트랩 스타일의 테이블 생성
+
+	                // 테이블 헤더 생성
+	                var thead = $("<thead/>").append($("<tr/>"))
+	                    .append(
+	                        $("<th/>").html("&nbsp;&nbsp;영화 제목"),
+	                        $("<th/>").html("&nbsp;&nbsp;영화 개봉일"),
+	                        $("<th/>").html("&nbsp;&nbsp;관람 등급"),
+	                        $("<th/>").html("&nbsp;&nbsp;영화 포스터")
+	                    );
+
+	                var tbody = $("<tbody/>");
+
+	                // 각 영화 정보 처리
+	                $.each(tmdbData.results, function(i, movie) {
+	                    var $id = movie.id; // 영화 고유 번호
+	                    var $title = movie.title; // 영화 제목
+	                    var $release_date = movie.release_date; // 영화 개봉일
+
+	                    // KOBIS API 호출을 위한 영화 제목 설정
+	                    $.ajax({
+	                        url: "https://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json",
+	                        dataType: 'json',
+	                        data: {
+	                            key: 'c21c7feb4d426541f043770aecec0565',
+	                            'movieNm': $title
+	                        },
+	                        success: function(kobisData) {
+	                            if (kobisData.movieListResult.movieList.length > 0) {
+	                                var movieCd = kobisData.movieListResult.movieList[0].movieCd;
+									console.log("movieCd: ",movieCd);
+	                                // KOBIS API를 통해 영화 상세 정보 가져오기
+	                                $.ajax({
+	                                    url: "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json",
+	                                    dataType: 'json',
+	                                    data: {
+	                                        key: 'c21c7feb4d426541f043770aecec0565',
+	                                        'movieCd': movieCd
+	                                    },
+	                                    success: function(detail) {
+	                                        // 관람 등급 정보 가져오기
+	                                        var watchGradeNm = detail.movieInfoResult.movieInfo.audits && detail.movieInfoResult.movieInfo.audits.length > 0 ? detail.movieInfoResult.movieInfo.audits[0].watchGradeNm : "미정";
+	                                        console.log("watchGradeNm: ", watchGradeNm)
+	                                        // TMDB API에서 포스터 이미지 URL 가져오기
+	                                        var posterPath = movie.poster_path;
+	                                        var posterUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
+	                                        // 테이블에 영화 정보 추가
+	                                        var row = $("<tr/>").append(
+	                                            $("<td/>").text($title),
+	                                            $("<td/>").text($release_date),
+	                                            $("<td/>").text(watchGradeNm),
+	                                            $("<td/>").append($("<img>").attr("src", posterUrl).attr("alt", $title).css("max-width", "100px")),
+	                                        );
+	                                        tbody.append(row);
+	                                        table.append(tbody);
+	                                        $(".wrap").append(table);
+	                                    },
+	                                    error: function(xhr, status, error) {
+	                                        console.error("KOBIS API 오류:", error);
+	                                    }
+	                                });
+	                            } else {
+	                                console.log("KOBIS에서 영화를 찾을 수 없습니다.");
+	                            }
+	                        },
+	                        error: function(xhr, status, error) {
+	                            console.error("KOBIS API 오류:", error);
+	                        }
+	                    });
+	                });
+
+	                table.append(thead);
+	                table.append(tbody);
+	                $(".wrap").append(table);
+	            } else {
+	                console.log("TMDB API에서 영화를 찾을 수 없습니다.");
+	            }
+	        },
+	        error: function(xhr, status, error) {
+	            console.error("TMDB API 오류:", error);
+	            alert("실시간 박스오피스 로딩중...");
+	        }
+	    });
+	});
+
+		
+	
+	
+	/* $(function(data){
 		$.ajax({
-			url : "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.xml?key=c21c7feb4d426541f043770aecec0565&targetDt="+result+"&itemPerPage=10",
+			url : "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList",
+			method: 'GET',
+			data: {
+				key :'c21c7feb4d426541f043770aecec0565',
+				targetDt : result,
+				itemPerPage: 10
+			},		
 			dataType : "xml",
 			success : function(data) {
 				var $data = $(data).find("boxOfficeResult>dailyBoxOfficeList>dailyBoxOffice");  // data 변수에 저장된 XML데이터를 jQery $()을 사용하여 jQuery객체로 변환 -> jQuery의 메소드를 사용하여 XML데이터를 쉽게 가져올 수 있음
@@ -153,21 +269,20 @@
 					var thead = $("<thead/>").append($("<tr/>"))
 							.append( // <td>
 									//추출하고자 하는 컬럼들의 타이틀 정의
-									$("<th/>").html("&nbsp;순위"),
 									$("<th/>").html("&nbsp;&nbsp;영화 제목"),
 									$("<th/>").html("&nbsp;&nbsp;영화 개봉일"),
-									$("<th/>").html("&nbsp;&nbsp;누적 매출액"),
-									$("<th/>").html("&nbsp;&nbsp;누적 관객수"));
+									$("<th/>").html("&nbsp;&nbsp;영화 포스터")
+							);
 					var tbody = $("<tbody/>"); // tbody선언
 					$.each($data, function(i, o) { // .each($반복할 데이터, function(index, value))
 		
 						//오픈 API에 정의된 변수와 내가 정의한 변수 데이터 파싱
-						var $rank = $(o).find("rank").text(); // 순위
+						var $movieCd = $(o).find("movieCd").text(); // 영화 고유 번호
 						var $movieNm = $(o).find("movieNm").text(); //영화명
 						var $openDt = $(o).find("openDt").text();// 영화 개봉일
-						var $salesAcc = $(o).find("salesAcc").text();//누적 매출액
-						var $audiAcc = $(o).find("audiAcc").text(); //누적 관객수
+						console.log("movieCd: "+$movieCd);
 						console.log("movieNm: "+$movieNm);
+						console.log("openDt: "+$openDt);
 						
 						$.ajax({
 							url : "https://api.themoviedb.org/3/search/movie",
@@ -191,11 +306,8 @@
 	                                console.log("posterUrl:",posterUrl);
 	                              //<tbody><tr><td>태그안에 파싱하여 추출된 데이터 넣기
 	        						var row = $("<tr/>").append( // .append는 새로운 구문 추가하는 것
-	        							$("<td/>").text($rank), // <td></td>안에 $rank의 값 집어 넣기
 	        							$("<td/>").text($movieNm),
 	        							$("<td/>").text($openDt),
-	        							$("<td/>").text($salesAcc),
-	        							$("<td/>").text($audiAcc),
 	        						    $("<td/>").append($("<img>").attr("src", posterUrl).attr("alt", title).css("max-width", "100px"))
 	        						);
 	        						tbody.append(row); // 데이터가 입력된 한 행을 tbody에 반복해서 추가
@@ -214,7 +326,7 @@
 			}
 		});
 	});
-
+ */
 	$(function(){
 		
 		
