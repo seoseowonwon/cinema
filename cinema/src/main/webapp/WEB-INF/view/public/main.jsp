@@ -62,7 +62,7 @@ $(function() {
                                             .text($movieNm + " (" + $openDt + ")") // 버튼 보이는 값
                                             .click(function() {
                                                $.ajax({
-                                            	   url: "/api/person/add",
+                                            	   url: "/api/theater/add",
                                             	   method: "POST",
                                             	   contentType: "application/json",
                                             	   data: JSON.stringify({
@@ -70,10 +70,11 @@ $(function() {
                                             		   region: "세종",
                                             		}),
                                             	   success : function(response){
+                                            		   console.log("response: ",response);
                                             		   if (response === "Success") {
                                             	            alert("데이터베이스에 저장되었습니다.");
                                             	            // 성공 처리 로직 추가
-                                            	        } else {
+                                            	        } else if (response === "fail") {
                                             	            alert("저장 실패했습니다.");
                                             	            // 실패 처리 로직 추가
                                             	        } 
@@ -113,5 +114,11 @@ $(function() {
 <body>
 <h3>영화 메인</h3>
 <div class="wrap"></div>
+
+<form action="/">
+	<input type="text" name="title">
+	<input type="text" name="title">
+	<button type="submit">제출</button>
+</form>
 </body>
 </html>

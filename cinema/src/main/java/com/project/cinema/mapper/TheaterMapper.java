@@ -1,16 +1,12 @@
 package com.project.cinema.mapper;
 
-import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.project.cinema.vo.Region;
-
-
-
-
+import com.project.cinema.entity.Theater;
 
 @Mapper
 public interface TheaterMapper {
-	List<Region> getAllRegion();
+	int insertTheater(Theater theater);
 }

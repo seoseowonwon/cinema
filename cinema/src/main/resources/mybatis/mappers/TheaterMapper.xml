@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.cinema.mapper.TheaterMapper">
-	
-	<select id="getAllRegion" resultType="com.project.cinema.vo.Region">
-		SELECT
-			region_no	AS no,
-			region_name AS name
-		FROM
+
+	<insert id="insertTheater" parameterType="com.project.cinema.entity.Theater">
+		INSERT INTO person(
+			title,
 			region
-	</select>
-	
+		) VALUES (
+			#{title},
+			#{region}
+		)
+	</insert>
 </mapper>
