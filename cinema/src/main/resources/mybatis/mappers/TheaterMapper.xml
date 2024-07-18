@@ -3,7 +3,7 @@
 <mapper namespace="com.project.cinema.mapper.TheaterMapper">
 
 	<insert id="insertTheater" parameterType="com.project.cinema.entity.Theater">
-		INSERT INTO person(
+		INSERT INTO region(
 			title,
 			region
 		) VALUES (

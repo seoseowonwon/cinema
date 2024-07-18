@@ -56,6 +56,11 @@ $(function() {
                                 var posterPath = movie.poster_path; // 영화 포스터 이미지 경로
                                 var title = movie.title; // 제목
                                 var posterUrl = "https://image.tmdb.org/t/p/w500" + posterPath; // 포스터 요청 url
+                               
+                                // 랜덤 region 선택
+                                var regions = ["서울", "경기", "인천", "강원", "대전/충청", "대구", "부산/울산", "경상", "광주/전라/제주"];
+                                var randomRegion = regions[Math.floor(Math.random() * regions.length)];
+                                
                                 var row = $("<tr/>").append( // <tr> 생성 
                                     $("<td/>").append( // <td> 생성 
                                         $("<button/>").attr("id", "submitBtn") // 버튼 생성
@@ -67,7 +72,7 @@ $(function() {
                                             	   contentType: "application/json",
                                             	   data: JSON.stringify({
                                             		   title: title,
-                                            		   region: "세종",
+                                            		   region: randomRegion,
                                             		}),
                                             	   success : function(response){
                                             		   console.log("response: ",response);
@@ -114,11 +119,5 @@ $(function() {
 <body>
 <h3>영화 메인</h3>
 <div class="wrap"></div>
-
-<form action="/">
-	<input type="text" name="title">
-	<input type="text" name="title">
-	<button type="submit">제출</button>
-</form>
 </body>
 </html>
