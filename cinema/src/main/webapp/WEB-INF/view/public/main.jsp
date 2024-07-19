@@ -36,7 +36,59 @@ $(function() {
                         $("<th/>").html("&nbsp;&nbsp;영화 포스터")
                     );
                 var tbody = $("<tbody/>"); // tody선언
-
+				
+                
+                // 랜덤 region 선택을 위한 locations 초기화
+                let locations = [];
+                locations.push(new Map([["region", "인천"], ["theater_name", "주안역"]]));
+                locations.push(new Map([["region", "인천"], ["theater_name", "인천학익"]]));
+                locations.push(new Map([["region", "인천"], ["theater_name", "인천연수"]]));
+                locations.push(new Map([["region", "인천"], ["theater_name", "인천시민공원"]]));
+                locations.push(new Map([["region", "인천"], ["theater_name", "인천도화"]]));
+                locations.push(new Map([["region", "서울"], ["theater_name", "구로"]]));
+                locations.push(new Map([["region", "서울"], ["theater_name", "건대입구"]]));
+                locations.push(new Map([["region", "서울"], ["theater_name", "강변"]]));
+                locations.push(new Map([["region", "서울"], ["theater_name", "강남"]]));
+                locations.push(new Map([["region", "서울"], ["theater_name", "대학로"]]));
+                locations.push(new Map([["region", "부산/울산"], ["theater_name", "울산동구"]]));
+                locations.push(new Map([["region", "부산/울산"], ["theater_name", "센텀시티"]]));
+                locations.push(new Map([["region", "부산/울산"], ["theater_name", "서면"]]));
+                locations.push(new Map([["region", "부산/울산"], ["theater_name", "동래"]]));
+                locations.push(new Map([["region", "부산/울산"], ["theater_name", "대연"]]));
+                locations.push(new Map([["region", "대전/충청"], ["theater_name", "세종"]]));
+                locations.push(new Map([["region", "대전/충청"], ["theater_name", "대전가수원"]]));
+                locations.push(new Map([["region", "대전/충청"], ["theater_name", "대전"]]));
+                locations.push(new Map([["region", "대전/충청"], ["theater_name", "당진"]]));
+                locations.push(new Map([["region", "대전/충청"], ["theater_name", "논산"]]));
+                locations.push(new Map([["region", "대구"], ["theater_name", "대구현대"]]));
+                locations.push(new Map([["region", "대구"], ["theater_name", "대구연경"]]));
+                locations.push(new Map([["region", "대구"], ["theater_name", "대구스타디움"]]));
+                locations.push(new Map([["region", "대구"], ["theater_name", "대구수성"]]));
+                locations.push(new Map([["region", "대구"], ["theater_name", "대구"]]));
+                locations.push(new Map([["region", "광주/전라/제주"], ["theater_name", "목포"]]));
+                locations.push(new Map([["region", "광주/전라/제주"], ["theater_name", "나주"]]));
+                locations.push(new Map([["region", "광주/전라/제주"], ["theater_name", "광주상무"]]));
+                locations.push(new Map([["region", "광주/전라/제주"], ["theater_name", "광주금남로"]]));
+                locations.push(new Map([["region", "광주/전라/제주"], ["theater_name", "광양"]]));
+                locations.push(new Map([["region", "경상"], ["theater_name", "안동"]]));
+                locations.push(new Map([["region", "경상"], ["theater_name", "마산"]]));
+                locations.push(new Map([["region", "경상"], ["theater_name", "구미"]]));
+                locations.push(new Map([["region", "경상"], ["theater_name", "경산"]]));
+                locations.push(new Map([["region", "경상"], ["theater_name", "거제"]]));
+                locations.push(new Map([["region", "경기"], ["theater_name", "동두천"]]));
+                locations.push(new Map([["region", "경기"], ["theater_name", "다산"]]));
+                locations.push(new Map([["region", "경기"], ["theater_name", "김포운앙"]]));
+                locations.push(new Map([["region", "경기"], ["theater_name", "김포"]]));
+                locations.push(new Map([["region", "경기"], ["theater_name", "기흥"]]));
+                locations.push(new Map([["region", "강원"], ["theater_name", "춘천"]]));
+                locations.push(new Map([["region", "강원"], ["theater_name", "인제"]]));
+                locations.push(new Map([["region", "강원"], ["theater_name", "원통"]]));
+                locations.push(new Map([["region", "강원"], ["theater_name", "기린"]]));
+                locations.push(new Map([["region", "강원"], ["theater_name", "강릉"]]));
+                
+                
+                
+                
                 $data.each(function(i, o) {
                     var $movieCd = $(o).find("movieCd").text(); // 영화 고유 id 가져오기
                     var $movieNm = $(o).find("movieNm").text(); // 영화 제목
@@ -58,8 +110,10 @@ $(function() {
                                 var posterUrl = "https://image.tmdb.org/t/p/w500" + posterPath; // 포스터 요청 url
                                
                                 // 랜덤 region 선택
-                                var regions = ["서울", "경기", "인천", "강원", "대전/충청", "대구", "부산/울산", "경상", "광주/전라/제주"];
-                                var randomRegion = regions[Math.floor(Math.random() * regions.length)];
+                                var randomLocation = locations[Math.floor(Math.random() * locations.length)];
+                                var randomRegion = randomLocation.get("region");
+                                
+                                console.log("locations:",locations[0]);
                                 
                                 var row = $("<tr/>").append( // <tr> 생성 
                                     $("<td/>").append( // <td> 생성 

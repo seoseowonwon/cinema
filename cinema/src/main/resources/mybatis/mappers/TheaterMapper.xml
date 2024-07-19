@@ -11,4 +11,36 @@
 			#{region}
 		)
 	</insert>
+	
+	 <!-- 랜덤한 title을 선택 -->
+    <select id="selectRandomTitle" resultType="string">
+        SELECT title
+        FROM movie_title
+        ORDER BY RAND()
+        LIMIT 1
+    </select>
+
+    <!-- 랜덤한 theater_name과 region을 선택 -->
+    <select id="selectRandomTheater" resultType="map">
+        SELECT theater_name, region
+        FROM movie_theater
+        ORDER BY RAND()
+        LIMIT 1
+    </select>
+
+    <!-- 랜덤한 time을 선택 -->
+    <select id="selectRandomTime" resultType="java.sql.Time">
+        SELECT TIME
+        FROM movie_time
+        ORDER BY RAND()
+        LIMIT 1
+    </select>
+
+    <!-- movie_reservation에 삽입 -->
+    <insert id="insertMovieReservation">
+        INSERT INTO movie_reservation (title, theater_name, region, time)
+        VALUES (#{title}, #{theater_name}, #{region}, #{time})
+    </insert>
+	
+	
 </mapper>
