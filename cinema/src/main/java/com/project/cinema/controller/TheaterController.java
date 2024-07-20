@@ -19,8 +19,12 @@ public class TheaterController {
 	
 	@PostMapping("/api/theater/add")
 	public String addTheater(@RequestBody Theater theater) {
-		log.debug(theater.getTitle());
-		log.debug(theater.getRegion());
+		log.debug(theater.getTitle().toString());
+		log.debug(theater.getRegion().toString());
+		log.debug(theater.getTheater_name().toString());
+		log.debug(theater.getDate().toString());
+		log.debug(theater.getTime().toString());
+		
 		int result = service.addTheater(theater);
 		return result > 0 ? "Success" : "fail";
 	} 

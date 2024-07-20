@@ -19,7 +19,4 @@ public class TheaterServiceImpl implements TheaterService{
 	public int addTheater(Theater theater) {
         return theaterMapper.insertTheater(theater);
 	}
-	
-	
-	
 }
