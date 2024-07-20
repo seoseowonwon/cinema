@@ -120,6 +120,8 @@
 	                                var title = movie.title; // 제목
 	                                var posterUrl = "https://image.tmdb.org/t/p/w500" + posterPath; // 포스터 요청 url
 	                               
+	                                
+	                                
 	                                // 랜덤 region 선택
 	                                var row = $("<tr/>").append( // <tr> 생성 
 	                                    $("<td/>").append( // <td> 생성 
