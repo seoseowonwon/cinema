@@ -1,6 +1,7 @@
 package com.project.cinema.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;	
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,4 +29,12 @@ public class TheaterController {
 		int result = service.addTheater(theater);
 		return result > 0 ? "Success" : "fail";
 	} 
+	
+	@PostMapping("/api/theater/delete")
+	public String deleteTheater() {
+		
+		int result = service.deleteTheater();
+		return result > 0 ? "Success" : "fail";
+	} 
+	
 }

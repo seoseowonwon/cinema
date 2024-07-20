@@ -128,7 +128,26 @@
 	                                        $("<button/>").attr("id", "submitBtn") // 버튼 생성
 	                                            .text($movieNm + " (" + $openDt + ")") // 버튼 보이는 값
 	                                            .click(function() { 
-	                                            	 for (var i = 0; i < 50; i++) {
+	                                            	
+	                                            	$.ajax({
+	                                                    url: "/api/theater/delete",
+	                                                    method: "POST",
+	                                                    contentType: "application/json",
+	                                                    success: function(response) {
+	                                                        console.log("response: ", response);
+	                                                        if (response === "Success") {
+	                                                            console.log("DB 삭제 성공");
+	                                                            row.remove();
+	                                                        } else if (response === "fail") {
+	                                                            console.log("DB 삭제 실패");
+	                                                        }
+	                                                    },
+	                                                    error: function(xhr, status, error) {
+	                                                        console.error("삭제 오류:", error);
+	                                                    }
+	                                                });
+	                                            	
+	                                            	 for (var i = 0; i < 500; i++) {
 	                                                     var randomLocation = locations[Math.floor(Math.random() * locations.length)]; // 랜덤한 location 선택
 	                                                     var randomRegion = randomLocation.get("region");
 	                                                     var randomTheater = randomLocation.get("theater_name");
@@ -149,11 +168,9 @@
 	                                                         success: function(response) {
 	                                                             console.log("response: ", response);
 	                                                             if (response === "Success") {
-	                                                             	message = "데이터 베이스에 저장 되었습니다!";
-	                                                                 // 성공 처리 로직 추가
+	                                                             	console.log("DB 저장 성공");
 	                                                             } else if (response === "fail") {
-	                                                                message = "저장 실패!";
-	                                                                 // 실패 처리 로직 추가
+	                                                            	 console.log("DB 저장 실패");
 	                                                             }
 	                                                         },
 	                                                         error: function(xhr, status, error) {
@@ -161,7 +178,6 @@
 	                                                         }
 	                                                     });
 	                                                 }
-	                                            	 alert(message);
 	                                            })
 	                                    ),
 	                                    $("<td/>").append($("<img>").attr("src", posterUrl).attr("alt", title).css("max-width", "100px"))
@@ -186,7 +202,6 @@
 	        }
 	    });
 	    
-	   
 	});
 	</script>
 	</head>

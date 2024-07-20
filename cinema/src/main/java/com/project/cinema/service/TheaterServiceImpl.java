@@ -12,11 +12,17 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Transactional
 @Slf4j
-public class TheaterServiceImpl implements TheaterService{
+public abstract class TheaterServiceImpl implements TheaterService{
 	@Autowired TheaterMapper theaterMapper;
 
 	@Override
 	public int addTheater(Theater theater) {
         return theaterMapper.insertTheater(theater);
 	}
+
+	@Override
+	public int deleteTheater() {
+		return theaterMapper.deleteTheater();
+	}
+	
 }

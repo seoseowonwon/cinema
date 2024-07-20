@@ -18,4 +18,8 @@
 		)
 	</insert>
 	
+	<delete id="deleteTheater">
+		DELETE FROM movie_reservation
+	</delete>
+	
 </mapper>
