@@ -119,8 +119,6 @@
 	                                var posterPath = movie.poster_path; // 영화 포스터 이미지 경로
 	                                var title = movie.title; // 제목
 	                                var posterUrl = "https://image.tmdb.org/t/p/w500" + posterPath; // 포스터 요청 url
-	                               
-	                                
 	                                
 	                                // 랜덤 region 선택
 	                                var row = $("<tr/>").append( // <tr> 생성 
@@ -137,7 +135,6 @@
 	                                                        console.log("response: ", response);
 	                                                        if (response === "Success") {
 	                                                            console.log("DB 삭제 성공");
-	                                                            row.remove();
 	                                                        } else if (response === "fail") {
 	                                                            console.log("DB 삭제 실패");
 	                                                        }
