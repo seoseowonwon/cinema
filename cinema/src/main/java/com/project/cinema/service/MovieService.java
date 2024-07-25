@@ -1,5 +1,8 @@
 package com.project.cinema.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +28,12 @@ public class MovieService implements TheaterService{
 	@Override
 	public int deleteTheater() {
 		return theaterMapper.deleteTheater();
+	}
+
+
+	@Override
+	public ArrayList<HashMap<String, Object>> getRegionInfo() {
+		return null;
 	}
 	
 	

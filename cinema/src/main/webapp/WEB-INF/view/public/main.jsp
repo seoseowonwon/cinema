@@ -175,7 +175,33 @@
 	                                                         }
 	                                                     });
 	                                                 }
-	                                            })
+	                                            	 
+	                                            	// AJAX 요청을 통해 DB에서 정보 가져오기
+                                            	    $.ajax({
+                                            	        url: "/api/theater/getInfo",  // 예시로 /api/theater/getInfo API를 가정
+                                            	        method: "GET",  // GET 요청으로 정보를 가져옴
+                                            	        success: function(response) {
+                                            	            console.log("DB에서 가져온 정보:", response);
+
+                                            	            // 가져온 정보를 출력할 <div> 선택
+                                            	            var $infoDiv = $(".info");
+                                            	            $infoDiv.empty();  // 기존 내용을 모두 지우고 새로운 내용을 추가
+
+                                            	            // 각 정보를 반복하여 <div>에 추가
+                                            	            response.forEach(function(info) {
+                                            	                var infoText = "Title: " + info.title + ", Region: " + info.region + ", Theater: " + info.theater_name + ", Time: " + info.time;
+                                            	                var infoElement = $("<p>").text(infoText);  // <p> 태그에 정보 추가
+                                            	                $infoDiv.append(infoElement);  // <div class="info">에 추가
+                                            	            });
+                                            	        },
+                                            	        error: function(xhr, status, error) {
+                                            	            console.error("정보를 가져오는 중 오류 발생:", error);
+                                            	        }
+                                            	    });
+                                            	 
+	                                            	 
+	                                            	 
+	                                            }) // click function
 	                                    ),
 	                                    $("<td/>").append($("<img>").attr("src", posterUrl).attr("alt", title).css("max-width", "100px"))
 	                                );
@@ -205,5 +231,6 @@
 	<body>
 	<h3>영화 메인</h3>
 	<div class="wrap"></div>
+	<div class="region"></div>
 	</body>
 	</html>

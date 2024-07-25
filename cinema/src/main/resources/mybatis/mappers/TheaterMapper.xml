@@ -22,4 +22,9 @@
 		DELETE FROM movie_reservation
 	</delete>
 	
+	<select id="getRegionInfo" resultType="Map">
+		SELECT DISTINCT region 
+		FROM movie_reservation
+	</select>
+	
 </mapper>
