@@ -27,4 +27,8 @@
 		FROM movie_reservation
 	</select>
 	
+	<select id="getTheaterInfo" resultType="Map">
+		
+	</select>
+	
 </mapper>

@@ -1,4 +1,6 @@
 	<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	
 	<!DOCTYPE html>
 	<html>
 	<head>
@@ -176,31 +178,6 @@
 	                                                     });
 	                                                 }
 	                                            	 
-	                                            	// AJAX 요청을 통해 DB에서 정보 가져오기
-                                            	    $.ajax({
-                                            	        url: "/api/theater/getInfo",  // 예시로 /api/theater/getInfo API를 가정
-                                            	        method: "GET",  // GET 요청으로 정보를 가져옴
-                                            	        success: function(response) {
-                                            	            console.log("DB에서 가져온 정보:", response);
-
-                                            	            // 가져온 정보를 출력할 <div> 선택
-                                            	            var $infoDiv = $(".info");
-                                            	            $infoDiv.empty();  // 기존 내용을 모두 지우고 새로운 내용을 추가
-
-                                            	            // 각 정보를 반복하여 <div>에 추가
-                                            	            response.forEach(function(info) {
-                                            	                var infoText = "Title: " + info.title + ", Region: " + info.region + ", Theater: " + info.theater_name + ", Time: " + info.time;
-                                            	                var infoElement = $("<p>").text(infoText);  // <p> 태그에 정보 추가
-                                            	                $infoDiv.append(infoElement);  // <div class="info">에 추가
-                                            	            });
-                                            	        },
-                                            	        error: function(xhr, status, error) {
-                                            	            console.error("정보를 가져오는 중 오류 발생:", error);
-                                            	        }
-                                            	    });
-                                            	 
-	                                            	 
-	                                            	 
 	                                            }) // click function
 	                                    ),
 	                                    $("<td/>").append($("<img>").attr("src", posterUrl).attr("alt", title).css("max-width", "100px"))
@@ -225,12 +202,78 @@
 	        }
 	    });
 	    
+	    
+	    
+	    
+	    
 	});
+	
+	// 첫 화면 모든 버튼 출력하기
+	// jQuery를 사용한 AJAX 요청
+ 	// 첫 화면 모든 버튼 출력하기
+	$(document).ready(function() {
+	    $.ajax({
+	        url: '/api/theater/getInfo', // 해당 컨트롤러로
+	        method: 'GET',
+	        dataType: 'json', // JSON 형식으로 응답받기
+	        success: function(data) { // 성공 했을 때
+	            var $region = $('.region'); // 클래스가 region인 요소를 선택하여 jQuery 객체로 만듭니다.
+	            $region.empty(); // 기존 내용 삭제
+	
+	            if (Array.isArray(data)) {
+	                data.forEach(function(item) { // 서버로 받은 데이터를 반복
+	                    var $itemDiv = $('<div/>').addClass('data-item'); 
+	                    var $button = $('<button/>').text(item.region); // region 데이터를 버튼으로 생성
+	                    $itemDiv.append($button);
+	                    $region.append($itemDiv);
+	                });
+	            } else {
+	                console.error('Data is not an array:', data);
+	            }
+	        },
+	        error: function(xhr, status, error) {
+	            console.error('Error fetching data:', error);
+	        }
+	    });
+	});
+	
+	$(document).ready(function() {
+	    $.ajax({
+	        url: '/api/theater/getTheaterInfo', // 해당 컨트롤러로
+	        method: 'GET',
+	        dataType: 'json', // JSON 형식으로 응답받기
+	        success: function(data) { // 성공 했을 때
+	            var $region = $('.region'); // 클래스가 region인 요소를 선택하여 jQuery 객체로 만듭니다.
+	            $region.empty(); // 기존 내용 삭제
+	
+	            if (Array.isArray(data)) {
+	                data.forEach(function(item) { // 서버로 받은 데이터를 반복
+	                    var $itemDiv = $('<div/>').addClass('data-item'); 
+	                    var $button = $('<button/>').text(item.region); // region 데이터를 버튼으로 생성
+	                    $itemDiv.append($button);
+	                    $region.append($itemDiv);
+	                });
+	            } else {
+	                console.error('Data is not an array:', data);
+	            }
+	        },
+	        error: function(xhr, status, error) {
+	            console.error('Error fetching data:', error);
+	        }
+	    });
+	});
+	
+	
+	
+		
 	</script>
 	</head>
 	<body>
-	<h3>영화 메인</h3>
-	<div class="wrap"></div>
-	<div class="region"></div>
+		<h3>영화 메인</h3>
+		<div class="wrap"></div>
+		<hr>
+		<h3>지역</h3>
+		<div class="region">
+		</div>
 	</body>
 	</html>

@@ -1,7 +1,7 @@
 package com.project.cinema.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +32,14 @@ public class MovieService implements TheaterService{
 
 
 	@Override
-	public ArrayList<HashMap<String, Object>> getRegionInfo() {
-		return null;
+	public List<Map<String, Object>> getRegionInfo() {
+		return theaterMapper.getRegionInfo();
+	}
+
+
+	@Override
+	public List<Map<String, Object>> getTheaterInfo() {
+		return theaterMapper.getTheaterInfo();
 	}
 	
 	

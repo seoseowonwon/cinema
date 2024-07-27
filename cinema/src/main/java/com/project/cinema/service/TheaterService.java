@@ -1,7 +1,7 @@
 package com.project.cinema.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.project.cinema.entity.Theater;
 
@@ -13,5 +13,9 @@ public interface TheaterService {
 	int deleteTheater();
 	
 	// 버튼을 누를때 해당 영화의 지역을 가져옴
-	ArrayList<HashMap<String, Object>> getRegionInfo();
+	List<Map<String, Object>> getRegionInfo();
+	
+	// 버튼을 누를때 해당 영화의 지역을 가져옴
+	List<Map<String, Object>> getTheaterInfo();
+	
 }

@@ -1,6 +1,9 @@
 package com.project.cinema.controller;
 
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,9 +45,13 @@ public class TheaterController {
 	
 	
 	@GetMapping("/api/theater/getInfo")
-	public String getRegionInfo() {
-		
-		return null;
+    public List<Map<String, Object>> getRegionInfo() {
+        return movieService.getRegionInfo();
+    }
+	
+	@GetMapping("/api/theater/getTheaterInfo")
+	public List<Map<String, Object>> getTheaterInfo() {
+		return movieService.getTheaterInfo();
 	}
 	
 }
