@@ -128,7 +128,6 @@
 	                                        $("<button/>").attr("id", "submitBtn") // 버튼 생성
 	                                            .text($movieNm + " (" + $openDt + ")") // 버튼 보이는 값
 	                                            .click(function() { 
-	                                            	
 	                                            	$.ajax({
 	                                                    url: "/api/theater/delete",
 	                                                    method: "POST",
@@ -146,7 +145,7 @@
 	                                                    }
 	                                                });
 	                                            	
-	                                            	 for (var i = 0; i < 500; i++) {
+	                                            	 for (var i = 0; i < 200; i++) {
 	                                                     var randomLocation = locations[Math.floor(Math.random() * locations.length)]; // 랜덤한 location 선택
 	                                                     var randomRegion = randomLocation.get("region");
 	                                                     var randomTheater = randomLocation.get("theater_name");
@@ -171,12 +170,36 @@
 	                                                             } else if (response === "fail") {
 	                                                            	 console.log("DB 저장 실패");
 	                                                             }
-	                                                         },
+	                                                         }, // success
 	                                                         error: function(xhr, status, error) {
 	                                                             console.error("저장 오류:", error);
 	                                                         }
-	                                                     });
-	                                                 }
+	                                                     }); // ajax
+	                                                 } // for 
+	                                                 
+	                                            	 $.ajax({
+	                                         	        url: '/api/theater/getInfo', // 해당 컨트롤러로
+	                                         	        method: 'GET',
+	                                         	        dataType: 'json', // JSON 형식으로 응답받기
+	                                         	        success: function(data) { // 성공 했을 때
+	                                         	            var $region = $('.region'); // 클래스가 region인 요소를 선택하여 jQuery 객체로 만듭니다.
+	                                         	            $region.empty(); // 기존 내용 삭제
+	                                         	
+	                                         	            if (Array.isArray(data)) {
+	                                         	                data.forEach(function(item) { // 서버로 받은 데이터를 반복
+	                                         	                    var $itemDiv = $('<div/>').addClass('data-item'); // div 영역 생성
+	                                         	                    var $button = $('<button/>').text(item.region); // region 데이터를 버튼으로 생성
+	                                         	                    $itemDiv.append($button); // div 안에 button 넣기
+	                                         	                    $region.append($itemDiv); // div<button>을 region class에 넣기
+	                                         	                });
+	                                         	            } else {
+	                                         	                console.error('Data is not an array:', data);
+	                                         	            }
+	                                         	        },
+	                                         	        error: function(xhr, status, error) {
+	                                         	            console.error('Error fetching data:', error);
+	                                         	        }
+	                                         	    });
 	                                            	 
 	                                            }) // click function
 	                                    ),
@@ -201,71 +224,8 @@
 	            alert("실시간 박스오피스 로딩중...");
 	        }
 	    });
-	    
-	    
-	    
-	    
-	    
 	});
-	
-	// 첫 화면 모든 버튼 출력하기
-	// jQuery를 사용한 AJAX 요청
- 	// 첫 화면 모든 버튼 출력하기
-	$(document).ready(function() {
-	    $.ajax({
-	        url: '/api/theater/getInfo', // 해당 컨트롤러로
-	        method: 'GET',
-	        dataType: 'json', // JSON 형식으로 응답받기
-	        success: function(data) { // 성공 했을 때
-	            var $region = $('.region'); // 클래스가 region인 요소를 선택하여 jQuery 객체로 만듭니다.
-	            $region.empty(); // 기존 내용 삭제
-	
-	            if (Array.isArray(data)) {
-	                data.forEach(function(item) { // 서버로 받은 데이터를 반복
-	                    var $itemDiv = $('<div/>').addClass('data-item'); 
-	                    var $button = $('<button/>').text(item.region); // region 데이터를 버튼으로 생성
-	                    $itemDiv.append($button);
-	                    $region.append($itemDiv);
-	                });
-	            } else {
-	                console.error('Data is not an array:', data);
-	            }
-	        },
-	        error: function(xhr, status, error) {
-	            console.error('Error fetching data:', error);
-	        }
-	    });
-	});
-	
-	$(document).ready(function() {
-	    $.ajax({
-	        url: '/api/theater/getTheaterInfo', // 해당 컨트롤러로
-	        method: 'GET',
-	        dataType: 'json', // JSON 형식으로 응답받기
-	        success: function(data) { // 성공 했을 때
-	            var $region = $('.region'); // 클래스가 region인 요소를 선택하여 jQuery 객체로 만듭니다.
-	            $region.empty(); // 기존 내용 삭제
-	
-	            if (Array.isArray(data)) {
-	                data.forEach(function(item) { // 서버로 받은 데이터를 반복
-	                    var $itemDiv = $('<div/>').addClass('data-item'); 
-	                    var $button = $('<button/>').text(item.region); // region 데이터를 버튼으로 생성
-	                    $itemDiv.append($button);
-	                    $region.append($itemDiv);
-	                });
-	            } else {
-	                console.error('Data is not an array:', data);
-	            }
-	        },
-	        error: function(xhr, status, error) {
-	            console.error('Error fetching data:', error);
-	        }
-	    });
-	});
-	
-	
-	
-		
+
 	</script>
 	</head>
 	<body>
