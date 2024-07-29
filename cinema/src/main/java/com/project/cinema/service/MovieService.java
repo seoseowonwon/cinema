@@ -17,29 +17,36 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MovieService implements TheaterService{
 	@Autowired TheaterMapper theaterMapper;
-
 	
 	@Override
 	public int addTheater(Theater theater) {
 		return theaterMapper.insertTheater(theater);
 	}
-
 	
 	@Override
 	public int deleteTheater() {
 		return theaterMapper.deleteTheater();
 	}
 
-
 	@Override
 	public List<Map<String, Object>> getRegionInfo() {
 		return theaterMapper.getRegionInfo();
 	}
 
+	@Override
+	public List<Map<String, Object>> getTheaterInfo(String region) {
+		return theaterMapper.getTheaterInfo(region);
+	}
 
 	@Override
-	public List<Map<String, Object>> getTheaterInfo() {
-		return theaterMapper.getTheaterInfo();
+	public List<Map<String, Object>> getTimeInfo(String theaterName) {
+		return theaterMapper.getTimeInfo(theaterName);
+	}
+
+	@Override
+	public int insertResDate(String resDate) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	

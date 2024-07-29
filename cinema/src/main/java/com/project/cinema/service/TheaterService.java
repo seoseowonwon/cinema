@@ -16,6 +16,12 @@ public interface TheaterService {
 	List<Map<String, Object>> getRegionInfo();
 	
 	// 버튼을 누를때 해당 영화의 지역을 가져옴
-	List<Map<String, Object>> getTheaterInfo();
+	List<Map<String, Object>> getTheaterInfo(String region);
+	
+	// 버튼 누를때 해당 영화의 시간을 가져옴
+	List<Map<String, Object>> getTimeInfo(String theaterName);
+	
+	//예약 날짜를 DB에 저장
+	int insertResDate(String resDate);
 	
 }

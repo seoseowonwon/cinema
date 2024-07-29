@@ -9,11 +9,16 @@ import com.project.cinema.entity.Theater;
 
 @Mapper
 public interface TheaterMapper {
+	
 	int insertTheater(Theater theater);
 	
 	int deleteTheater();
 	
 	List<Map<String, Object>> getRegionInfo();
 	
-	List<Map<String, Object>> getTheaterInfo();
+	List<Map<String, Object>> getTheaterInfo(String region);
+	
+	List<Map<String, Object>> getTimeInfo(String theaterName);
+	
+	int insertResDate(String resDate);
 }

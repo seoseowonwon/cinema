@@ -30,4 +30,9 @@ public class CinemaController {
 		
 		return "/public/main";
 	}
+	
+	@GetMapping("/public/test")
+	public String test() {
+		return "/public/test";
+	}
 }

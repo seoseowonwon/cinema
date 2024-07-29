@@ -50,8 +50,12 @@ public class TheaterController {
     }
 	
 	@GetMapping("/api/theater/getTheaterInfo")
-	public List<Map<String, Object>> getTheaterInfo() {
-		return movieService.getTheaterInfo();
+	public List<Map<String, Object>> getTheaterInfo(String region) {
+		return movieService.getTheaterInfo(region);
 	}
 	
+	@GetMapping("/api/theater/getTimeInfo")
+	public List<Map<String, Object>> getTimeInfo(String theaterName){
+		return movieService.getTimeInfo(theaterName);
+	}
 }

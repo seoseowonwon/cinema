@@ -28,7 +28,15 @@
 	</select>
 	
 	<select id="getTheaterInfo" resultType="Map">
-		
+		SELECT distinct theater_name 
+		FROM movie_reservation 
+		WHERE region=#{region}
+	</select>
+	
+	<select id="getTimeInfo" parameterType="String" resultType="Map">
+		SELECT time 
+		FROM movie_reservation 
+		WHERE theater_name=#{theaterName}
 	</select>
 	
 </mapper>
