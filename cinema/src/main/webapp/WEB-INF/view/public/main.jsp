@@ -378,9 +378,40 @@
 	    thisDay = yyyy + "-" + mm + '-' + dd;
 	    console.log("thisDay: ",thisDay);
 	    console.log("theater_name: ",theaterName);
-	   
+		
+	    $.ajax({
+	        url: '/api/theater/getTimeInfo', // 해당 컨트롤러로
+	        method: 'GET',
+	        dataType: 'json',
+	        data: {
+	            theater_name: theaterName // 클릭된 버튼의 value 값으로 검색
+	        },
+	        success: function(data) {
+	            var $timeDiv = $('.time'); // 클래스가 region인 요소를 선택하여 jQuery 객체로 만듦
+	            $timeDiv.find('.time-info').remove(); // 기존 theater 정보 삭제
+            	console.log(data);
+
+	            if (Array.isArray(data)) { // Array 형식인가?
+	                data.forEach(function(item) { // 서버로 받은 데이터를 반복
+	                    var $movieTimeDiv = $('<div/>')
+	                    		.addClass('time-info'); // div 영역 생성
+	                    console.log('item.teater_name: ',item.theater_name);
+	                    var $timeButton = $('<button/>')
+	                    		.text(item.time) // theater_name 데이터를 표시하는 버튼 생성
+	                    		.addClass('timeBtn')
+	                    		.val(item.theater_name); 
+	                    $movieTimeDiv.append($timeButton);
+	                    $timeDiv.append($movieTimeDiv); // div<theater_info>를 region class에 추가
+	                });
+	            } else {
+	                console.error('Data is not an array:', data);
+	            }
+	        },
+	        error: function(xhr, status, error) {
+	            console.error('Error fetching theater names:', error);
+	        }
+	    });
 	});
-	
 	/* // thisDay 값 넘겨 DB에 저장하기 예약날짜 최종적으로 res_date에 집어 넣기
     $.ajax({
         url: '/api/theater/insertResDate', // 해당 컨트롤러로
@@ -428,6 +459,6 @@
 		<div class="month"></div>
 		<div class="now-day"></div>
 		<h3>시간</h3>
-       	<div class="time-check"></div>
+       	<div class="time"></div>
 	</body>
 	</html>
