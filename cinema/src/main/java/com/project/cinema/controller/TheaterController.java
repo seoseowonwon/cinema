@@ -1,6 +1,8 @@
 package com.project.cinema.controller;
 
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -59,5 +61,13 @@ public class TheaterController {
 	public List<Map<String, Object>> getTimeInfo(@RequestParam(name = "theater_name") String theaterName){
 		log.debug("theaterName: ",theaterName);
 		return movieService.getTimeInfo(theaterName);
+	}
+	
+	@PostMapping("/api/theater/updateResDate")
+	public int updateResDate(@RequestParam(name="res_date") String resDate, 
+			@RequestParam(name="theater_name") String theaterName,
+			@RequestParam(name="time") String time) {
+		
+        return movieService.updateResDate(resDate, theaterName, time);
 	}
 }

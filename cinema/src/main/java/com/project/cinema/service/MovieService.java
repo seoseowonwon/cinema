@@ -44,9 +44,8 @@ public class MovieService implements TheaterService{
 	}
 
 	@Override
-	public int insertResDate(String resDate) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateResDate(String resDate, String theaterName, String time) {
+		return theaterMapper.updateResDate(resDate, theaterName, time);
 	}
 	
 	

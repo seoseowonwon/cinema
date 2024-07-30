@@ -174,7 +174,7 @@
 	                                                         }, // success
 	                                                         error: function(xhr, status, error) {
 	                                                             console.error("저장 오류:", error);
-	                                                         }
+	                                            	             }
 	                                                     }); // ajax
 	                                                 } // for 
 	                                                 
@@ -192,7 +192,7 @@
 	                                         	                    var $button = $('<button/>')
 	                                         	                    	.text(item.region)
 	                                         	                    	.addClass('regionBtn')
-	                                         	                    	.val(item.region); // 데이터를 버튼으로 생성
+	                                         	                    	.data('region',item.region); // 데이터를 버튼으로 생성
 	                                         	                    $itemDiv.append($button); // div 안에 button 넣기
 	                                         	                    $region.append($itemDiv); // div<button>을 region class에 넣기
 	                                         	                });
@@ -232,7 +232,7 @@
 	
 	// 동적으로 생성된 버튼의 클릭 이벤트 처리
 	$(document).on('click', '.regionBtn', function() {
-	    var regionValue = $(this).val(); // 클릭된 버튼의 value 값 가져오기
+	    var regionValue = $(this).data('region'); // 클릭된 버튼의 value 값 가져오기
 	    console.log('Button clicked:', regionValue);
 	    $.ajax({
 	        url: '/api/theater/getTheaterInfo', // 해당 컨트롤러로
@@ -252,7 +252,8 @@
 	                    var $theaterButton = $('<button/>')
 	                    		.text(item.theater_name)// theater_name 데이터를 표시하는 버튼 생성
 	                    		.addClass('theaterBtn')
-	                    		.val(item.theater_name); 
+	                    		.data('region', item.region)
+	                    		.data('theater_name', item.theater_name); 
 	                    $itemDiv.append($theaterButton);
 	                    $theaterDiv.append($itemDiv); // div<theater_info>를 region class에 추가
 	                });
@@ -267,20 +268,15 @@
 	});
 	
 	$(document).on('click', '.theaterBtn', function() {
-	    var theaterValue = $(this).val(); // 클릭된 버튼의 value 값 가져오기
+	    var theaterValue = $(this).data('theater_name'); // 클릭된 버튼의 value 값 가져오기
 	    console.log('Button clicked:', theaterValue);
 	    
 	    const dataDate = new Date(); // 오늘 날짜 생성
 	    let year = dataDate.getFullYear(); // 이번 년도 
-	    console.log("year -->"+year); 
 	    let month = dataDate.getMonth(); // -1 월 출력
-	    console.log("month -->"+month); 
 	    let dataDay = dataDate.getDate(); // 일 출력
-	    console.log("dataDay -->"+dataDay); 
 	    let dayLabel = dataDate.getDay();  // 0 (일요일) ~ 6(토요일) ex) 오늘이 수요일이라면 3이 출력
-	    console.log("dayLabel -->"+dayLabel);
 	    let dayNumber = Number(dataDay); // 이번 달의 최대 일 수 ex) 28, 30, 31 값 중에 하나
-	    console.log("dayNumber -->"+dayNumber);
 	    $('div.month').text((Number(month)+1)+"월"); // -1 월이므로 +1을 하고 월을 붙여서 div.month라는 클래스를 가진 모든 div요소를 선택
 	    
 	    const reserveDate = $('div.now-day'); // 예약 날짜
@@ -371,14 +367,12 @@
 	// mon 버튼 클릭 이벤트 추가 부분
 	$(document).on('click', '.mon', function() {
 	    var dataDay = $(this).attr('data-day'); // 클릭된 버튼의 data-day 값 가져오기
-	    var theaterName = $(this).attr('theater_name');
 	    var yyyy = dataDay.substring(0, 4); // 앞 4자리
 	    var mm = dataDay.substring(4, 6); // 중간 2자리
 	    var dd = dataDay.substring(6, 8); // 나머지 2자리
 	    thisDay = yyyy + "-" + mm + '-' + dd;
-	    console.log("thisDay: ",thisDay);
-	    console.log("theater_name: ",theaterName);
-		
+		var theaterName = $(this).attr('theater_name');
+		console.log('.mon theaterName:',theaterName);
 	    $.ajax({
 	        url: '/api/theater/getTimeInfo', // 해당 컨트롤러로
 	        method: 'GET',
@@ -389,19 +383,21 @@
 	        success: function(data) {
 	            var $timeDiv = $('.time'); // 클래스가 region인 요소를 선택하여 jQuery 객체로 만듦
 	            $timeDiv.find('.time-info').remove(); // 기존 theater 정보 삭제
-            	console.log(data);
+            	console.log('data debug: ', data); 
 
 	            if (Array.isArray(data)) { // Array 형식인가?
 	                data.forEach(function(item) { // 서버로 받은 데이터를 반복
 	                    var $movieTimeDiv = $('<div/>')
 	                    		.addClass('time-info'); // div 영역 생성
-	                    console.log('item.teater_name: ',item.theater_name);
 	                    var $timeButton = $('<button/>')
 	                    		.text(item.time) // theater_name 데이터를 표시하는 버튼 생성
 	                    		.addClass('timeBtn')
-	                    		.val(item.theater_name); 
+	                    		.data('theater_name', theaterName)
+	                    		.data('thisDay', thisDay)
+	                    		.data('time',item.time);
 	                    $movieTimeDiv.append($timeButton);
 	                    $timeDiv.append($movieTimeDiv); // div<theater_info>를 region class에 추가
+	                    console.log('mon thisDay:', thisDay);
 	                });
 	            } else {
 	                console.error('Data is not an array:', data);
@@ -412,38 +408,43 @@
 	        }
 	    });
 	});
-	/* // thisDay 값 넘겨 DB에 저장하기 예약날짜 최종적으로 res_date에 집어 넣기
-    $.ajax({
-        url: '/api/theater/insertResDate', // 해당 컨트롤러로
-        method: 'GET',
-        dataType: 'json',
-        data: {
-            res_date: thisDay // 클릭된 버튼의 value 값을 region에 할당
-        },
-        success: function(data) {
-            var $theaterDiv = $('.theater'); // 클래스가 region인 요소를 선택하여 jQuery 객체로 만듦
-            $theaterDiv.find('.theater-info').remove(); // 기존 theater 정보 삭제
-
-            if (Array.isArray(data)) {
-                data.forEach(function(item) { // 서버로 받은 데이터를 반복
-                    var $itemDiv = $('<div/>')
-                    		.addClass('theater-info'); // div 영역 생성
-                    var $theaterButton = $('<button/>')
-                    		.text(item.theater_name)
-                    		.addClass('theaterBtn')
-                    		.val(item.theater_name); // theater_name 데이터를 표시하는 버튼 생성
-                    $itemDiv.append($theaterButton);
-                    $theaterDiv.append($itemDiv); // div<theater_info>를 region class에 추가
-                });
-            } else {
-                console.error('Data is not an array:', data);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching theater names:', error);
-        }
-    });
-     */
+	
+	// .timeBtn 버튼 클릭 이벤트 리스너
+	$(document).on('click', '.timeBtn', function() {
+	    var thisDay = $(this).data('thisDay');
+	    var theaterName = $(this).data('theater_name');
+	    var time = $(this).data('time');
+	    console.log('time thisDay: ', thisDay);
+	    console.log('time theaterName: ', theaterName);
+		console.log('time time: ', time);
+	    // AJAX 요청 설정
+	    $.ajax({
+	        url: '/api/theater/updateResDate', // 실제 서버 URL로 변경하세요
+	        method: 'POST',
+	        contentType: 'application/json',
+	        data: JSON.stringify({ // 데이터 객체를 JSON 문자열로 변환
+	            res_date: thisDay,
+	            time: time,
+	            theater_name: theaterName
+	        }),
+	        success: function(response) {
+	            // 요청이 성공적으로 처리되었을 때의 콜백 함수
+	            console.log('서버 응답:', response);
+	            // 추가적인 작업을 여기에 작성할 수 있습니다
+	        },
+	        error: function(xhr, status, error) {
+	            // 요청이 실패했을 때의 콜백 함수
+	            console.error('AJAX 요청 실패:', status, error);
+	            console.error('AJAX 요청 실패:', status, error);
+	            console.log('Response status:', xhr.status);
+	            console.log('Response status text:', xhr.statusText);
+	            console.log('Response text:', xhr.responseText);
+	            // 오류 처리 로직을 여기에 작성할 수 있습니다
+	        }
+	    });
+	});
+	
+	
 	</script>
 	</head>
 	<body>

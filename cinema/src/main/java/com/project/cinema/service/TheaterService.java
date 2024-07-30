@@ -22,6 +22,6 @@ public interface TheaterService {
 	List<Map<String, Object>> getTimeInfo(String theaterName);
 	
 	//예약 날짜를 DB에 저장
-	int insertResDate(String resDate);
+	int updateResDate(String resDate, String theaterName, String time);
 	
 }
