@@ -20,6 +20,6 @@ public interface TheaterMapper {
 	
 	List<Map<String, Object>> getTimeInfo(String theaterName);
 	
-	int updateResDate(String resDate, String theaterName, String time);
+	int updateResDate(String res_date, String theaterName, String time);
 	
 }

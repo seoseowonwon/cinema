@@ -64,10 +64,16 @@ public class TheaterController {
 	}
 	
 	@PostMapping("/api/theater/updateResDate")
-	public int updateResDate(@RequestParam(name="res_date") String resDate, 
-			@RequestParam(name="theater_name") String theaterName,
-			@RequestParam(name="time") String time) {
-		
-        return movieService.updateResDate(resDate, theaterName, time);
+	public int updateResDate(@RequestBody Map<String, String> requestData) {
+	    String resDate = requestData.get("res_date");
+	    String theaterName = requestData.get("theater_name");
+	    String time = requestData.get("time");
+
+	    log.debug("res_date: {}", resDate);
+	    log.debug("theaterName: {}", theaterName);
+	    log.debug("time: {}", time);
+
+	    return movieService.updateResDate(resDate, theaterName, time);
 	}
+
 }

@@ -44,8 +44,8 @@ public class MovieService implements TheaterService{
 	}
 
 	@Override
-	public int updateResDate(String resDate, String theaterName, String time) {
-		return theaterMapper.updateResDate(resDate, theaterName, time);
+	public int updateResDate(String res_date, String theaterName, String time) {
+		return theaterMapper.updateResDate(res_date, theaterName, time);
 	}
 	
 	

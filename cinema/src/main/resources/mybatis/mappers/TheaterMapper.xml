@@ -42,8 +42,9 @@
 	
 	<update id="updateResDate" parameterType="String">
 		UPDATE movie_reservation
-		SET res_date = #{resDate}
-		WHERE theater_name = #{theaterName}, time = #{time};
+		SET res_date = #{res_date}
+		WHERE theater_name = #{theaterName}
+		AND time = #{time};
 	</update>
 	
 </mapper>

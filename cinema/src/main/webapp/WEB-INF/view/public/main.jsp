@@ -411,38 +411,39 @@
 	
 	// .timeBtn 버튼 클릭 이벤트 리스너
 	$(document).on('click', '.timeBtn', function() {
-	    var thisDay = $(this).data('thisDay');
-	    var theaterName = $(this).data('theater_name');
-	    var time = $(this).data('time');
-	    console.log('time thisDay: ', thisDay);
-	    console.log('time theaterName: ', theaterName);
-		console.log('time time: ', time);
-	    // AJAX 요청 설정
-	    $.ajax({
-	        url: '/api/theater/updateResDate', // 실제 서버 URL로 변경하세요
-	        method: 'POST',
-	        contentType: 'application/json',
-	        data: JSON.stringify({ // 데이터 객체를 JSON 문자열로 변환
-	            res_date: thisDay,
-	            time: time,
-	            theater_name: theaterName
-	        }),
-	        success: function(response) {
-	            // 요청이 성공적으로 처리되었을 때의 콜백 함수
-	            console.log('서버 응답:', response);
-	            // 추가적인 작업을 여기에 작성할 수 있습니다
-	        },
-	        error: function(xhr, status, error) {
-	            // 요청이 실패했을 때의 콜백 함수
-	            console.error('AJAX 요청 실패:', status, error);
-	            console.error('AJAX 요청 실패:', status, error);
-	            console.log('Response status:', xhr.status);
-	            console.log('Response status text:', xhr.statusText);
-	            console.log('Response text:', xhr.responseText);
-	            // 오류 처리 로직을 여기에 작성할 수 있습니다
-	        }
-	    });
-	});
+    var resDate = $(this).data('thisDay');
+    var theaterName = $(this).data('theater_name');
+    var time = $(this).data('time');
+    
+    console.log('time resDate: ', resDate);
+    console.log('time theaterName: ', theaterName);
+    console.log('time time: ', time);
+    
+    // AJAX 요청 설정
+    $.ajax({
+        url: '/api/theater/updateResDate', // 실제 서버 URL로 변경하세요
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ // 데이터 객체를 JSON 문자열로 변환
+            res_date: resDate,
+            theater_name: theaterName,
+            time: time
+        }),
+        success: function(response) {
+            // 요청이 성공적으로 처리되었을 때의 콜백 함수
+            console.log('서버 응답:', response);
+            // 추가적인 작업을 여기에 작성할 수 있습니다
+        },
+        error: function(xhr, status, error) {
+            // 요청이 실패했을 때의 콜백 함수
+            console.error('AJAX 요청 실패:', status, error);
+            console.log('Response status:', xhr.status);
+            console.log('Response status text:', xhr.statusText);
+            console.log('Response text:', xhr.responseText);
+            // 오류 처리 로직을 여기에 작성할 수 있습니다
+        }
+    });
+});
 	
 	
 	</script>
