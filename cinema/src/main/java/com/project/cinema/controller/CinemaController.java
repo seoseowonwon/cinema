@@ -35,4 +35,9 @@ public class CinemaController {
 	public String test() {
 		return "/public/test";
 	}
+	
+	@GetMapping("/auth/seatBooking")
+	public String seatBooking() {
+		return "/auth/seatBooking";
+	}
 }
