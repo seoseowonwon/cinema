@@ -442,14 +442,13 @@
 			success : function(data) {
 				var $timeDiv = $('.time'); // 클래스가 region인 요소를 선택하여 jQuery 객체로 만듦
 				$timeDiv.find('.time-info').remove(); // 기존 theater 정보 삭제
-				console.log('data debug: ', data);
 
 				if (Array.isArray(data)) { // Array 형식인가?
 					data.forEach(function(item) { // 서버로 받은 데이터를 반복
 						var $movieTimeDiv = $('<div/>').addClass(
 								'time-info'); // div 영역 생성
 						var $timeButton = $('<button/>').text(item.time) // theater_name 데이터를 표시하는 버튼 생성
-								.addClass('timeBtn').data('theater_name', theaterName)
+								.addClass('timeBtn').data('theater_name', theaterName).data('title', title)
 								.data('thisDay', thisDay).data('time', item.time);
 						$movieTimeDiv.append($timeButton);
 						$timeDiv.append($movieTimeDiv); // div<theater_info>를 region class에 추가
@@ -467,36 +466,69 @@
 	
 	// .timeBtn 버튼 클릭 이벤트 리스너
 	$(document).on('click', '.timeBtn', function() {
-    var resDate = $(this).data('thisDay');
-    var theaterName = $(this).data('theater_name');
-    var time = $(this).data('time');
-    
-    console.log('time resDate: ', resDate);
-    console.log('time theaterName: ', theaterName);
-    console.log('time time: ', time);
-    
-    // AJAX 요청 설정
-    $.ajax({
-        url: '/api/theater/updateResDate', // 실제 서버 URL로 변경하세요
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ // 데이터 객체를 JSON 문자열로 변환
-            res_date: resDate,
-            theater_name: theaterName,
-            time: time
-        }),
-        success: function(response) {
-            // 요청이 성공적으로 처리되었을 때의 콜백 함수
-            console.log('서버 응답:', response);
-            
-            
-        },
-        error: function(xhr, status, error) {
-            // 요청이 실패했을 때의 콜백 함수
-            console.error('AJAX 요청 실패:', status, error);
-        }
-    });
-});
+		var title = $(this).data('title');
+	    var resDate = $(this).data('thisDay');
+	    var theaterName = $(this).data('theater_name');
+	    var time = $(this).data('time');
+	    
+	    console.log('time title: ', title);
+	    console.log('time resDate: ', resDate);
+	    console.log('time theaterName: ', theaterName);
+	    console.log('time time: ', time);
+	    
+	    // AJAX 요청 설정
+	    $.ajax({
+	        url: '/api/theater/updateResDate', // 실제 서버 URL로 변경하세요
+	        method: 'POST',
+	        contentType: 'application/json',
+	        data: JSON.stringify({ // 데이터 객체를 JSON 문자열로 변환
+	            res_date: resDate,
+	            theater_name: theaterName,
+	            time: time
+	        }),
+	        success: function(response) {
+	            // 요청이 성공적으로 처리되었을 때의 콜백 함수
+	            console.log('서버 응답:', response);
+	        },
+	        error: function(xhr, status, error) {
+	            // 요청이 실패했을 때의 콜백 함수
+	            console.error('AJAX 요청 실패:', status, error);
+	        }
+	    });
+	    
+		// 새로운 form element 생성
+	    var form = $('<form>', {
+	        action: '/auth/seatBooking',
+	        method: 'POST'
+	    });
+		form.append($('<input>',{
+			type: 'hidden',
+			name: 'title',
+			value: title
+		}));
+	    // form에 hidden input 요소 추가
+	    form.append($('<input>', {
+	        type: 'hidden',
+	        name: 'resDate',
+	        value: resDate
+	    }));
+	    form.append($('<input>', {
+	        type: 'hidden',
+	        name: 'theaterName',
+	        value: theaterName
+	    }));
+	    form.append($('<input>', {
+	        type: 'hidden',
+	        name: 'time',
+	        value: time
+	    }));
+
+	    // form을 body에 추가하고 제출
+	    $('body').append(form);
+	    form.submit();
+	});
+	
+	
 </script>
 </head>
 <body>

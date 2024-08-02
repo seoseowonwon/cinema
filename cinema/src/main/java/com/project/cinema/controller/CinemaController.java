@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.cinema.service.MovieRatingService;
@@ -36,8 +37,21 @@ public class CinemaController {
 		return "/public/test";
 	}
 	
-	@GetMapping("/auth/seatBooking")
-	public String seatBooking() {
-		return "/auth/seatBooking";
-	}
+	@PostMapping("/auth/seatBooking")
+    public String handleSeatBooking(@RequestParam String resDate,
+    								@RequestParam String title,
+                                     @RequestParam String theaterName,
+                                     @RequestParam String time, Model model){
+		// view단으로 전달
+		model.addAttribute("title", title);
+		model.addAttribute("resDate", resDate);
+        model.addAttribute("theaterName", theaterName);
+        model.addAttribute("time", time);
+        System.out.println("Received title: " + title);
+        System.out.println("Received resDate: " + resDate);
+        System.out.println("Received theaterName: " + theaterName);
+        System.out.println("Received time: " + time);
+        
+        return "/auth/seatBooking";
+    }
 }
