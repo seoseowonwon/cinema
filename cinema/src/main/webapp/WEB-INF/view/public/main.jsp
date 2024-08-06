@@ -545,7 +545,5 @@
 	<div class="now-day"></div>
 	<h3>시간</h3>
 	<div class="time"></div>
-	<h3>좌석 예매</h3>
-	<div class="body"></div>
 </body>
 </html>

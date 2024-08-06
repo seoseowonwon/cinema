@@ -54,4 +54,24 @@ public class CinemaController {
         
         return "/auth/seatBooking";
     }
+	
+	@PostMapping("/auth/confirmBooking")
+	public String confirmBooking(@RequestParam String resDate,
+								 @RequestParam String title,
+					             @RequestParam String theaterName,
+					             @RequestParam String time, 
+					             @RequestParam String seats, Model model) {
+		model.addAttribute("title", title);
+		model.addAttribute("resDate", resDate);
+        model.addAttribute("theaterName", theaterName);
+        model.addAttribute("time", time);
+        model.addAttribute("seats", seats);
+        System.out.println("Received title: " + title);
+        System.out.println("Received resDate: " + resDate);
+        System.out.println("Received theaterName: " + theaterName);
+        System.out.println("Received time: " + time);
+		
+		
+		return "/auth/confirmBooking";
+	}
 }

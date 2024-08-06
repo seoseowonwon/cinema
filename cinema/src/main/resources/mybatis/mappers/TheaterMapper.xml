@@ -47,4 +47,13 @@
 		AND time = #{time};
 	</update>
 	
+	<update id="updateSeats" parameterType="String">
+		UPDATE movie_reservation
+		SET seats = #{seats}
+		WHERE title= #{title}
+		AND res_date = #{resDate}
+		AND theater_name = #{theaterName}
+		AND time = #{time};
+	</update>
+	
 </mapper>

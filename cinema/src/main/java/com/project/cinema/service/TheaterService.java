@@ -24,4 +24,8 @@ public interface TheaterService {
 	//예약 날짜를 DB에 저장
 	int updateResDate(String res_date, String theaterName, String time);
 	
+	// seats 정보값 저장
+	int updateSeats(String seats, String title, String time, String resDate, String theaterName);
+	
+	
 }

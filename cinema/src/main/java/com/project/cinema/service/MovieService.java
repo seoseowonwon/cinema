@@ -47,6 +47,15 @@ public class MovieService implements TheaterService{
 	public int updateResDate(String res_date, String theaterName, String time) {
 		return theaterMapper.updateResDate(res_date, theaterName, time);
 	}
+
+	@Override
+	public int updateSeats(String res_date, 
+							String title,
+							String theaterName, 
+							String time,
+							String seats) {
+		return theaterMapper.updateSeats(title, res_date, theaterName, time, seats);
+	}
 	
 	
 }

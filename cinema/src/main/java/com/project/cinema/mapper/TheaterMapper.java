@@ -22,4 +22,6 @@ public interface TheaterMapper {
 	
 	int updateResDate(String res_date, String theaterName, String time);
 	
+	int updateSeats(String seats, String title, String time, String resDate, String theaterName);
+	
 }
