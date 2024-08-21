@@ -9,6 +9,12 @@ public interface TheaterService {
 	// 버튼 누를 때 마다 db에 제목, 지역, 영화관 이름, 날짜, 시간등 입력
 	int addTheater(Theater theater);
 	
+	// 이미 존재하는 제목인지 체크
+	int checkTitle(String title);
+	
+	// 오늘 날짜인지 확인. 오늘 날짜가 아닐 경우 DB를 초기화 하기 위함
+	int checkDateResultDelete(String date);
+	
 	// 버튼 누를때마다 db 정보 초기화
 	int deleteTheater();
 	
@@ -25,7 +31,11 @@ public interface TheaterService {
 	int updateResDate(String res_date, String theaterName, String time);
 	
 	// seats 정보값 저장
-	int updateSeats(String seats, String title, String time, String resDate, String theaterName);
+	int updateSeats(String title, String theaterName, String resDate, String time, String seats);
 	
+	// 첫 화면에서 예약된 자리인지 아닌지 확인 값 불러옴
+	List<Map<String, String>> getSeatInfo(String title, String theaterName, String resDate, String time);
 	
+	// 파라미터값에 해당하는 예약하고자 하는 영화의 id를 가져 옴
+	int bringMovieNo(String title, String theaterName, String resDate, String time);
 }

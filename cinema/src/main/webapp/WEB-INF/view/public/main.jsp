@@ -26,6 +26,37 @@
 		
 		console.log('date_result: ',date_result);
 		
+		// 하루가 지난 데이터면 삭제하고자 함
+		$.ajax({
+			url : "/api/theater/checkDateResultDelete",
+			method : "GET",
+			data : {
+				date : date_result
+			},
+			success : function(response){
+				if(response != 1){ // 오늘 날짜가 아닐 경우 데이터 전체 초기화
+					$.ajax({
+						url : "/api/theater/delete",
+						method : "POST",
+						contentType : "application/json",
+						success : function(response) { 
+							if (response === "Success") {
+								console.log("DB 삭제 성공");
+							} 
+							else if (response === "fail") {
+								console.log("DB 삭제 실패");
+							}
+						},
+						error: function( xhr, status, error ){
+							console.error("삭제 오류:", error);
+						}
+					});				
+				} else {
+					console.log('최기화 필요 없음');
+				}
+			}
+		})
+		
 		$.ajax({
 			url : "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList",
 			method : 'GET',
@@ -39,8 +70,9 @@
 				var $data = $(data).find("boxOfficeResult > dailyBoxOfficeList > dailyBoxOffice");
 				if ($data.length > 0) {
 					var table = $("<table/>").attr("class", "table"); // css와 테이블 선언
-					var thead = $("<thead/>").append($("<tr/>")).append($("<th/>").html("&nbsp;&nbsp;영화 제목 및 개봉일"),$("<th/>").html("&nbsp;&nbsp;영화 포스터"));
+					var thead = $("<thead/>").append($("<tr/>")).append($("<th/>").html("&nbsp;&nbsp;영화 제목"),$("<th/>").html("&nbsp;&nbsp;영화 포스터"));
 					var tbody = $("<tbody/>"); // tody선언
+					
 					// 랜덤 region 선택을 위한 locations 초기화
 					let locations = [];
 					locations.push(new Map([ [ "region", "인천" ],
@@ -174,51 +206,52 @@
 									.click( function() {
 										var clickedTitle = $(this).data('title');
 										$.ajax({
-											url : "/api/theater/delete",
-											method : "POST",
-											contentType : "application/json",
-											success : function(response) { 
-												if (response === "Success") {
-													console.log("DB 삭제 성공");
-												} 
-												else if (response === "fail") {
-													console.log("DB 삭제 실패");
-												}
+											url : "/api/theater/checkTitle",
+											method : "GET",
+											data : {
+												title : $movieNm
 											},
-											error: function( xhr, status, error ){
-												console.error("삭제 오류:", error);
-											}
-										});
-
-									for (var i = 0; i < 200; i++) {
-										var randomLocation = locations[Math.floor(Math.random()* locations.length)]; // 랜덤한 location 선택
-										var randomRegion = randomLocation.get("region");
-										var randomTheater = randomLocation.get("theater_name");
-										var randomTimes = times[Math.floor(Math.random()* times.length)]; // 랜덤한 time 선택
-										var randomTime = randomTimes.get("time");
-										$.ajax({
-											url : "/api/theater/add",
-											method : "POST",
-											contentType : "application/json",
-											data: JSON.stringify({
-												title : title,
-												region : randomRegion,
-												theater_name : randomTheater,
-												date : date_result,
-												time : randomTime
-											}), 
-											success : function(response) {
-												if (response === "Success") {
-													console.log("DB 저장 성공");
-												} else if (response === "fail") {
-													console.log("DB 저장 실패");
+											success : function(response){
+												if(response == 1){ // 제목이 이미 있을 경우
+													console.log("제목이 존재 합니다");
+												
+												} else { // 제목이 없을 경우
+									                
+													console.log("제목이 존재하지 않습니다.");
+													// 랜덤 데이터 생성
+													for (var i = 0; i < 200; i++) {
+														var randomLocation = locations[Math.floor(Math.random()* locations.length)]; // 랜덤한 location 선택
+														var randomRegion = randomLocation.get("region");
+														var randomTheater = randomLocation.get("theater_name");
+														var randomTimes = times[Math.floor(Math.random()* times.length)]; // 랜덤한 time 선택
+														var randomTime = randomTimes.get("time");
+														// 자동으로 랜덤 데이터 주입
+														$.ajax({
+															url : "/api/theater/add",
+															method : "POST",
+															contentType : "application/json",
+															data: JSON.stringify({
+																title : title,
+																region : randomRegion,
+																theater_name : randomTheater,
+																date : date_result,
+																time : randomTime
+															}), 
+															success : function(response) {
+																if (response === "Success") { // 데이터 주입 성공 시 실행
+																	console.log("DB 저장 성공");
+																} 
+															} // success
+														
+														}); // ajax
+													} // for 
 												}
-											}, // success
-											error : function(xhr, status, error) {
-												console.error("저장 오류:", error);
+											}, error: function( xhr, status, error ){
+												console.error("데이터를 읽어 올 수 없습니다.", error);
 											}
-										}); // ajax
-									} // for 
+										
+										})
+										
 									
 									// 지역 버튼 
 									$.ajax({
@@ -242,11 +275,11 @@
 													$region.append($itemDiv); // div<button>을 region class에 넣기
 												});
 											} else { 
-												console.error( 'Data is not an array:', data);
+												console.error( '배열이 아닙니다: ', data);
 											}
 										},
 										error : function(xhr,status,error) {
-											console.error('Error fetching data:',error);
+											console.error('에러 발생:',error);
 										}
 									});
 									}) // click function
@@ -276,8 +309,8 @@
 
 	// 동적으로 생성된 버튼의 클릭 이벤트 처리
 	$(document).on('click', '.regionBtn', function() {
-		var regionValue = $(this).data('region'); // 클릭된 버튼의 value 값 가져오기
 		var title = $(this).data('title');
+		var regionValue = $(this).data('region'); // 클릭된 버튼의 value 값 가져오기
 		$.ajax({
 			url : '/api/theater/getTheaterInfo', // 해당 컨트롤러로
 			method : 'GET',
@@ -293,7 +326,10 @@
 					data.forEach(function(item) { // 서버로 받은 데이터를 반복
 						var $itemDiv = $('<div/>').addClass('theater-info'); // div 영역 생성
 						var $theaterButton = $('<button/>').text(item.theater_name)// theater_name 데이터를 표시하는 버튼 생성
-							.addClass('theaterBtn').data('title', title).data('region', regionValue ).data('theater_name', item.theater_name);
+							.addClass('theaterBtn')
+							.data('title', title)
+							.data('region', regionValue )
+							.data('theater_name', item.theater_name);
 						$itemDiv.append($theaterButton);
 						$theaterDiv.append($itemDiv); // div<theater_info>를 region class에 추가
 					});
@@ -308,8 +344,8 @@
 	});
 
 	$(document).on('click', '.theaterBtn', function() {
-		var theaterValue = $(this).data('theater_name'); // 클릭된 버튼의 value 값 가져오기
 		var title = $(this).data('title');
+		var theaterValue = $(this).data('theater_name'); // 클릭된 버튼의 value 값 가져오기
 		var region = $(this).data('region');
 		const dataDate = new Date(); // 오늘 날짜 생성
 		let year = dataDate.getFullYear(); // 이번 년도 
@@ -448,7 +484,9 @@
 						var $movieTimeDiv = $('<div/>').addClass(
 								'time-info'); // div 영역 생성
 						var $timeButton = $('<button/>').text(item.time) // theater_name 데이터를 표시하는 버튼 생성
-								.addClass('timeBtn').data('theater_name', theaterName).data('title', title)
+								.addClass('timeBtn')
+								.data('title', title)
+								.data('theater_name', theaterName)
 								.data('thisDay', thisDay).data('time', item.time);
 						$movieTimeDiv.append($timeButton);
 						$timeDiv.append($movieTimeDiv); // div<theater_info>를 region class에 추가
@@ -496,36 +534,55 @@
 	        }
 	    });
 	    
-		// 새로운 form element 생성
-	    var form = $('<form>', {
-	        action: '/auth/seatBooking',
-	        method: 'POST'
-	    });
-		form.append($('<input>',{
-			type: 'hidden',
-			name: 'title',
-			value: title
-		}));
-	    // form에 hidden input 요소 추가
-	    form.append($('<input>', {
-	        type: 'hidden',
-	        name: 'resDate',
-	        value: resDate
-	    }));
-	    form.append($('<input>', {
-	        type: 'hidden',
-	        name: 'theaterName',
-	        value: theaterName
-	    }));
-	    form.append($('<input>', {
-	        type: 'hidden',
-	        name: 'time',
-	        value: time
-	    }));
-
-	    // form을 body에 추가하고 제출
-	    $('body').append(form);
-	    form.submit();
+	    // movie_no의 값을 넣어 주기
+	    $.ajax({
+	    	url: '/api/theater/bringMovieNo',
+	    	method: 'GET',
+	    	data: {
+	    	    title : title,
+	    	    theater_name : theaterName,
+	    	    res_date : resDate,
+	    	    time : time
+	    	},
+	    	success : function(response){
+	    		var movieNo = response;
+	    		console.log('time movieNo: ',movieNo);
+	    		// 새로운 form element 생성
+	    	    var form = $('<form>', {
+	    	        action: '/auth/seatBooking',
+	    	        method: 'POST'
+	    	    });
+	    	    form.append($('<input>',{
+	    			type: 'hidden',
+	    			name: 'movieNo',
+	    			value: movieNo
+	    		}));
+	    		form.append($('<input>',{
+	    			type: 'hidden',
+	    			name: 'title',
+	    			value: title
+	    		}));
+	    	    // form에 hidden input 요소 추가
+	    	    form.append($('<input>', {
+	    	        type: 'hidden',
+	    	        name: 'resDate',
+	    	        value: resDate
+	    	    }));
+	    	    form.append($('<input>', {
+	    	        type: 'hidden',
+	    	        name: 'theaterName',
+	    	        value: theaterName
+	    	    }));
+	    	    form.append($('<input>', {
+	    	        type: 'hidden',
+	    	        name: 'time',
+	    	        value: time
+	    	    }));
+	    	    // form을 body에 추가하고 제출
+	    	    $('body').append(form);
+	    	    form.submit();
+	    	}
+	    })
 	});
 	
 	
