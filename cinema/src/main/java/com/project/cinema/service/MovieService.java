@@ -28,20 +28,22 @@ public class MovieService implements TheaterService{
 	public int deleteTheater() {
 		return theaterMapper.deleteTheater();
 	}
-
+	
+	// submitBtn을 클릭 시, 해당 지역들이 뜨도록 함
 	@Override
-	public List<Map<String, Object>> getRegionInfo() {
-		return theaterMapper.getRegionInfo();
+	public List<Map<String, Object>> getRegionInfo(String title) {
+		return theaterMapper.getRegionInfo(title);
 	}
 
 	@Override
-	public List<Map<String, Object>> getTheaterInfo(String region) {
-		return theaterMapper.getTheaterInfo(region);
+	public List<Map<String, Object>> getTheaterInfo(String title, String region) {
+		return theaterMapper.getTheaterInfo(title, region);
 	}
 
 	@Override
-	public List<Map<String, Object>> getTimeInfo(String theaterName) {
-		return theaterMapper.getTimeInfo(theaterName);
+	public List<Map<String, Object>> getTimeInfo(String title, String region, String theaterName) {
+		log.debug("theatherName: {}",theaterName);
+		return theaterMapper.getTimeInfo(title, region, theaterName);
 	}
 
 	@Override

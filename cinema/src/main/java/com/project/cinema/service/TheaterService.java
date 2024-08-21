@@ -19,13 +19,13 @@ public interface TheaterService {
 	int deleteTheater();
 	
 	// 버튼을 누를때 해당 영화의 지역을 가져옴
-	List<Map<String, Object>> getRegionInfo();
+	List<Map<String, Object>> getRegionInfo(String title);
 	
 	// 버튼을 누를때 해당 영화의 지역을 가져옴
-	List<Map<String, Object>> getTheaterInfo(String region);
+	List<Map<String, Object>> getTheaterInfo(String title, String region);
 	
 	// 버튼 누를때 해당 영화의 시간을 가져옴
-	List<Map<String, Object>> getTimeInfo(String theaterName);
+	List<Map<String, Object>> getTimeInfo(String title, String region, String theaterName);
 	
 	//예약 날짜를 DB에 저장
 	int updateResDate(String res_date, String theaterName, String time);

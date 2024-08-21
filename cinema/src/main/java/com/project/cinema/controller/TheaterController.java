@@ -51,21 +51,27 @@ public class TheaterController {
 	}
 	
 	@GetMapping("/api/theater/getInfo")
-    public List<Map<String, Object>> getRegionInfo() {
-        return movieService.getRegionInfo();
+    public List<Map<String, Object>> getRegionInfo(String title) {
+        return movieService.getRegionInfo(title);
     }
 	
 	// 지역명을 전달 받아 해당지역에 상영 중인 극장명을 불러옴
 	@GetMapping("/api/theater/getTheaterInfo")
-	public List<Map<String, Object>> getTheaterInfo(String region) {
-		return movieService.getTheaterInfo(region);
+	public List<Map<String, Object>> getTheaterInfo(String title, String region) {
+		return movieService.getTheaterInfo(title, region);
 	}
 	
 	// 극장명을 받아 상영 시간을 받음
-	@GetMapping("/api/theater/getTimeInfo")
-	public List<Map<String, Object>> getTimeInfo(@RequestParam(name = "theater_name") String theaterName){
-		log.debug("theaterName: ",theaterName);
-		return movieService.getTimeInfo(theaterName);
+	@PostMapping("/api/theater/getTimeInfo")
+	public List<Map<String, Object>> getTimeInfo(@RequestBody Map<String, String> requestData){
+		String title = requestData.get("title");
+	    String region = requestData.get("region");
+	    String theaterName = requestData.get("theater_name");
+		
+	    log.debug("###############################title: {}", title);
+	    log.debug("###############################region: {}", region);
+	    log.debug("###############################theaterName: {}", theaterName);
+		return movieService.getTimeInfo(title, region, theaterName);
 	}
 	
 	// 예약 날짜, 극장, 시간 등을 입력받아 예약 날짜를 수정

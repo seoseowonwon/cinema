@@ -33,20 +33,23 @@
 	<select id="getRegionInfo" resultType="Map">
 		SELECT DISTINCT region 
 		FROM movie_reservation
+		WHERE title = #{title}
 	</select>
 	
 	<select id="getTheaterInfo" resultType="Map">
 		SELECT distinct theater_name 
 		FROM movie_reservation 
-		WHERE region=#{region}
+		WHERE title = #{title} 
+		AND region=#{region}  
 	</select>
 	
 	<select id="getTimeInfo" parameterType="String" resultType="Map">
 		SELECT time 
 		FROM movie_reservation 
-		WHERE theater_name=#{theaterName}
+		WHERE title = #{title}
+		AND region = #{region}
+		AND theater_name= #{theaterName}
 	</select>
-	
 	
 	<update id="updateResDate" parameterType="String">
 		UPDATE movie_reservation

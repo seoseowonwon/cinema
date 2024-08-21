@@ -16,11 +16,11 @@ public interface TheaterMapper {
 	
 	int deleteTheater();
 	
-	List<Map<String, Object>> getRegionInfo();
+	List<Map<String, Object>> getRegionInfo(String title);
 	
-	List<Map<String, Object>> getTheaterInfo(String region);
+	List<Map<String, Object>> getTheaterInfo(String title, String region);
 	
-	List<Map<String, Object>> getTimeInfo(String theaterName);
+	List<Map<String, Object>> getTimeInfo(String title, String region, String theaterName);
 	
 	int updateResDate(String res_date, String theaterName, String time);
 	

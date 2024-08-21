@@ -204,6 +204,13 @@
 									.data('title', $movieNm)
 									.text( $movieNm )
 									.click( function() {
+										// 기존의 모든 초기화
+									    $('.regionBtn').remove();
+										$('.theaterBtn').remove();
+										$('.mon').remove();
+										$('.time').remove();
+										console.log('영화 선택 초기화');
+										
 										var clickedTitle = $(this).data('title');
 										$.ajax({
 											url : "/api/theater/checkTitle",
@@ -251,13 +258,14 @@
 											}
 										
 										})
-										
 									
 									// 지역 버튼 
 									$.ajax({
-										url : '/api/theater/getInfo', // 해당 컨트롤러로
+										url : '/api/theater/getInfo',
 										method : 'GET',
-										dataType : 'json', // JSON 형식으로 응답받기
+										data : {
+											title : title
+										},
 										success : function(data) { // 성공 했을 때
 											var $region = $('.region'); // 클래스가 region인 요소를 선택하여 jQuery 객체로 만듭니다.
 											$region.empty(); // 기존 내용 삭제
@@ -311,11 +319,15 @@
 	$(document).on('click', '.regionBtn', function() {
 		var title = $(this).data('title');
 		var regionValue = $(this).data('region'); // 클릭된 버튼의 value 값 가져오기
+		
+		
+		
 		$.ajax({
 			url : '/api/theater/getTheaterInfo', // 해당 컨트롤러로
 			method : 'GET',
 			dataType : 'json',
 			data : {
+				title : title,
 				region : regionValue
 			// 클릭된 버튼의 value 값을 region에 할당
 			},
@@ -468,17 +480,19 @@
 		console.log('.mon theaterName:', theaterName);
 		
 		$.ajax({
-			url : '/api/theater/getTimeInfo', // 해당 컨트롤러로
-			method : 'GET',
-			dataType : 'json',
-			data : {
+			url : '/api/theater/getTimeInfo',
+			method : 'POST',
+			contentType: 'application/json',
+			data : JSON.stringify({
+				title : title,
+				region : region,
 				theater_name : theaterName
-			// 클릭된 버튼의 value 값으로 검색
-			},
+			}),
 			success : function(data) {
+				console.log('data debug: ',data);
 				var $timeDiv = $('.time'); // 클래스가 region인 요소를 선택하여 jQuery 객체로 만듦
 				$timeDiv.find('.time-info').remove(); // 기존 theater 정보 삭제
-
+				
 				if (Array.isArray(data)) { // Array 형식인가?
 					data.forEach(function(item) { // 서버로 받은 데이터를 반복
 						var $movieTimeDiv = $('<div/>').addClass(
@@ -490,14 +504,14 @@
 								.data('thisDay', thisDay).data('time', item.time);
 						$movieTimeDiv.append($timeButton);
 						$timeDiv.append($movieTimeDiv); // div<theater_info>를 region class에 추가
-						console.log('mon thisDay:', thisDay);
+						console.log('timeBtn 생성 완료');
 					});
 				} else {
-					console.error('Data is not an array:', data);
+					console.error('배열이 아닙니다: ', data);
 				}
 			}, // success 
 			error : function(xhr, status, error) {
-				console.error('Error fetching theater names:', error);
+				console.error('에러 발생: ', error);
 			}
 		});
 	});
