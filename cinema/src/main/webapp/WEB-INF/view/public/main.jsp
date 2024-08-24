@@ -208,7 +208,8 @@
 									    $('.regionBtn').remove();
 										$('.theaterBtn').remove();
 										$('.mon').remove();
-										$('.time').remove();
+										$('.month').remove();
+										$('.timeBtn').remove();
 										console.log('영화 선택 초기화');
 										
 										var clickedTitle = $(this).data('title');
@@ -470,41 +471,38 @@
 		var yyyy = dataDay.substring(0, 4); // 앞 4자리
 		var mm = dataDay.substring(4, 6); // 중간 2자리
 		var dd = dataDay.substring(6, 8); // 나머지 2자리
-		thisDay = yyyy + "-" + mm + '-' + dd;
-		var title = $(this).attr('title');
-		var region = $(this).attr('region');
-		var theaterName = $(this).attr('theater_name');
+		$thisDay = yyyy + "-" + mm + '-' + dd;
+		var $title = $(this).attr('title');
+		var $region = $(this).attr('region');
+		var $theaterName = $(this).attr('theater_name');
 		
-		console.log('.mon title:', title);
-		console.log('.mon region:', region);
-		console.log('.mon theaterName:', theaterName);
+		console.log('.mon title:', $title);
+		console.log('.mon region:', $region);
+		console.log('.mon theaterName:', $theaterName);
 		
 		$.ajax({
 			url : '/api/theater/getTimeInfo',
 			method : 'POST',
 			contentType: 'application/json',
 			data : JSON.stringify({
-				title : title,
-				region : region,
-				theater_name : theaterName
+				title : $title,
+				region : $region,
+				theater_name : $theaterName
 			}),
 			success : function(data) {
 				console.log('data debug: ',data);
-				var $timeDiv = $('.time'); // 클래스가 region인 요소를 선택하여 jQuery 객체로 만듦
-				$timeDiv.find('.time-info').remove(); // 기존 theater 정보 삭제
-				
+				var $timeSelect = $('.time-select');
 				if (Array.isArray(data)) { // Array 형식인가?
 					data.forEach(function(item) { // 서버로 받은 데이터를 반복
-						var $movieTimeDiv = $('<div/>').addClass(
-								'time-info'); // div 영역 생성
-						var $timeButton = $('<button/>').text(item.time) // theater_name 데이터를 표시하는 버튼 생성
-								.addClass('timeBtn')
-								.data('title', title)
-								.data('theater_name', theaterName)
-								.data('thisDay', thisDay).data('time', item.time);
-						$movieTimeDiv.append($timeButton);
-						$timeDiv.append($movieTimeDiv); // div<theater_info>를 region class에 추가
-						console.log('timeBtn 생성 완료');
+						var $timeBtn = $('<button/>')
+						.text(item.time)
+						.addClass('timeBtn')
+						.data('title', $title)
+						.data('region', $region)
+						.data('theater_name', $theaterName)
+						.data('thisDay', $thisDay)
+						.data('time', item.time)
+						$timeSelect.append($timeBtn); 
 					});
 				} else {
 					console.error('배열이 아닙니다: ', data);
@@ -548,18 +546,19 @@
 	        }
 	    });
 	    
-	    // movie_no의 값을 넣어 주기
+	    // movie_no의 값을 찾아와 주기
 	    $.ajax({
 	    	url: '/api/theater/bringMovieNo',
-	    	method: 'GET',
-	    	data: {
+	    	method: 'POST',
+	    	contentType: 'application/json',
+	    	data: JSON.stringify({
 	    	    title : title,
 	    	    theater_name : theaterName,
 	    	    res_date : resDate,
 	    	    time : time
-	    	},
+	    	}),
 	    	success : function(response){
-	    		var movieNo = response;
+	    		var movieNo = response.movie_no;
 	    		console.log('time movieNo: ',movieNo);
 	    		// 새로운 form element 생성
 	    	    var form = $('<form>', {
@@ -595,7 +594,11 @@
 	    	    // form을 body에 추가하고 제출
 	    	    $('body').append(form);
 	    	    form.submit();
-	    	}
+	    	},
+	    	error: function(xhr, status, error) {
+	            console.error('AJAX 요청 실패: ', status, error);
+	            alert('영화 정보를 불러오는 중 오류가 발생했습니다. 다시 시도해 주세요.');
+	        }
 	    })
 	});
 	
@@ -611,10 +614,13 @@
 	<hr>
 	<h3>영화관</h3>
 	<div class="theater"></div>
+	<hr>
 	<h3>날짜</h3>
 	<div class="month"></div>
 	<div class="now-day"></div>
+	<hr>
 	<h3>시간</h3>
-	<div class="time"></div>
+	<div class="time-select"></div>
+	<hr>
 </body>
 </html>

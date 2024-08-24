@@ -47,17 +47,21 @@ public class TheaterController {
 	
 	@GetMapping("/api/theater/checkTitle")
 	public int checkTitle(String title) {
+		log.debug("checkTitle title: {}", title);
 		return movieService.checkTitle(title);
 	}
 	
 	@GetMapping("/api/theater/getInfo")
     public List<Map<String, Object>> getRegionInfo(String title) {
+		log.debug("getRegionInfo title: {}", title);
         return movieService.getRegionInfo(title);
     }
 	
 	// 지역명을 전달 받아 해당지역에 상영 중인 극장명을 불러옴
 	@GetMapping("/api/theater/getTheaterInfo")
 	public List<Map<String, Object>> getTheaterInfo(String title, String region) {
+		log.debug("getTheaterInfo title: {}", title);
+		log.debug("getTheaterInfo region: {}", region);
 		return movieService.getTheaterInfo(title, region);
 	}
 	
@@ -68,9 +72,9 @@ public class TheaterController {
 	    String region = requestData.get("region");
 	    String theaterName = requestData.get("theater_name");
 		
-	    log.debug("###############################title: {}", title);
-	    log.debug("###############################region: {}", region);
-	    log.debug("###############################theaterName: {}", theaterName);
+	    log.debug("getTimeInfo title: {}", title);
+	    log.debug("getTimeInfo region: {}", region);
+	    log.debug("getTimeInfo theaterName: {}", theaterName);
 		return movieService.getTimeInfo(title, region, theaterName);
 	}
 	
@@ -81,9 +85,9 @@ public class TheaterController {
 	    String theaterName = requestData.get("theater_name");
 	    String time = requestData.get("time");
 
-	    log.debug("res_date: ", resDate);
-	    log.debug("theaterName: ", theaterName);
-	    log.debug("time: ", time);
+	    log.debug("updateResDate res_date: {}", resDate);
+	    log.debug("updateResDate theaterName: {}", theaterName);
+	    log.debug("updateResDate time: {}", time);
 
 	    return movieService.updateResDate(resDate, theaterName, time);
 	}
@@ -98,23 +102,36 @@ public class TheaterController {
 		    String time = (String) updateSeatInfo.get("time");
 		    String seats  =(String) updateSeatInfo.get("seats");
 		    
-		    log.debug("title: ", title);
-			log.debug("theater_name: ", theaterName);
-			log.debug("res_date: ", resDate);
-			log.debug("time: ", time);
-			log.debug("seats: ", seats);
+		    log.debug("updateSeats title: {}", title);
+			log.debug("updateSeats theater_name: {}", theaterName);
+			log.debug("updateSeats res_date: {}", resDate);
+			log.debug("updateSeats time: {}", time);
+			log.debug("updateSeats seats: {}", seats);
 			
 		    return movieService.updateSeats(title, theaterName, resDate, time, seats);
 	}
 	
 	@GetMapping("/api/theater/checkDateResultDelete")
 	public int checkDateResultDelete(String date) {
+		
+		log.debug("checkDateResultDelete date: {}", date);
+		
 		return movieService.checkDateResultDelete(date);
 	}
 	
 	// 파라미터값에 해당되는 예약하고자 하는 영화의 id를 가져 옴
-	@GetMapping("/api/theater/bringMovieNo")
-	public int bringMovieNo(String title, String theaterName, String resDate, String time){
+	@PostMapping("/api/theater/bringMovieNo")
+	public String bringMovieNo(@RequestBody Map<String, Object> getMovieNoInfo){
+		String title = (String) getMovieNoInfo.get("title");
+		String theaterName = (String) getMovieNoInfo.get("theater_name");
+		String resDate = (String) getMovieNoInfo.get("res_date");
+		String time = (String) getMovieNoInfo.get("time");
+		
+		log.debug("bringMovieNo title: {}", title);
+		log.debug("bringMovieNo theater_name: {}", theaterName);
+		log.debug("bringMovieNo res_date: {}", resDate);
+		log.debug("bringMovieNo time: {}", time);
+		
 		return movieService.bringMovieNo(title, theaterName, resDate, time);
 	}
 	

@@ -77,7 +77,7 @@ public class MovieService implements TheaterService{
 
 	// 파라미터값에 해당하는 예약하고자 하는 영화의 id를 가져 옴
 	@Override
-	public int bringMovieNo(String title, String theaterName, String resDate, String time) {
+	public String bringMovieNo(String title, String theaterName, String resDate, String time) {
 		return theaterMapper.bringMovieNo(title, theaterName, resDate, time);
 	}
 	

@@ -37,5 +37,5 @@ public interface TheaterService {
 	List<Map<String, String>> getSeatInfo(String title, String theaterName, String resDate, String time);
 	
 	// 파라미터값에 해당하는 예약하고자 하는 영화의 id를 가져 옴
-	int bringMovieNo(String title, String theaterName, String resDate, String time);
+	String bringMovieNo(String title, String theaterName, String resDate, String time);
 }
