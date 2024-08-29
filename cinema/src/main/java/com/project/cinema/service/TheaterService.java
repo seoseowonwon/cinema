@@ -34,8 +34,14 @@ public interface TheaterService {
 	int updateSeats(String title, String theaterName, String resDate, String time, String seats);
 	
 	// 첫 화면에서 예약된 자리인지 아닌지 확인 값 불러옴
-	List<Map<String, String>> getSeatInfo(String title, String theaterName, String resDate, String time);
+	Map<String, Object> getSeatInfo(String movieNo);
 	
 	// 파라미터값에 해당하는 예약하고자 하는 영화의 id를 가져 옴
 	String bringMovieNo(String title, String theaterName, String resDate, String time);
+	
+	// 해당 movie_no의 영화 좌석 테이블이 있는지 체크 
+	int checkSeats(String movieNo);
+	
+	// 테이블에 해당하는 값이 없을 때 INSERT INTO
+	int insertSeats(String movieNo);
 }

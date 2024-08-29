@@ -1,5 +1,6 @@
 package com.project.cinema.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,8 +59,16 @@ public class MovieService implements TheaterService{
 	}
 
 	@Override
-	public List<Map<String, String>> getSeatInfo(String title, String theaterName, String resDate, String time) {
-		return theaterMapper.getSeatInfo(title, theaterName, resDate, time);
+	public Map<String, Object> getSeatInfo(String movieNo) {
+		
+		 // MyBatis에서 HashMap으로 결과를 받음
+        Map<String, Object> resultMap = theaterMapper.getSeatInfo(movieNo);
+        log.debug("MovieService getSeatInfo resultMap --> {}", resultMap);
+        // LinkedHashMap으로 변환하여 순서 유지
+        Map<String, Object> orderedResult = new LinkedHashMap<>(resultMap);
+        log.debug("MovieService getSeatInfo orderedResult --> {}",orderedResult);
+        
+		return orderedResult;
 	}
 
 
@@ -79,6 +88,18 @@ public class MovieService implements TheaterService{
 	@Override
 	public String bringMovieNo(String title, String theaterName, String resDate, String time) {
 		return theaterMapper.bringMovieNo(title, theaterName, resDate, time);
+	}
+
+	// 해당 movie_no의 영화 좌석 테이블이 있는지 체크
+	@Override
+	public int checkSeats(String movieNo) {
+		return theaterMapper.checkSeats(movieNo);
+	}
+
+	// 테이블에 해당하는 값이 없을 때 INSERT INTO
+	@Override
+	public int insertSeats(String movieNo) {
+		return theaterMapper.insertSeats(movieNo);
 	}
 	
 	

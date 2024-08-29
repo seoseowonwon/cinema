@@ -558,12 +558,12 @@
 	    	    time : time
 	    	}),
 	    	success : function(response){
-	    		var movieNo = response.movie_no;
+	    		var movieNo = response;
 	    		console.log('time movieNo: ',movieNo);
 	    		// 새로운 form element 생성
 	    	    var form = $('<form>', {
 	    	        action: '/auth/seatBooking',
-	    	        method: 'POST'
+	    	        method: 'GET'
 	    	    });
 	    	    form.append($('<input>',{
 	    			type: 'hidden',

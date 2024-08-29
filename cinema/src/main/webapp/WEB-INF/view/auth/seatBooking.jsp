@@ -3,7 +3,11 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.time.LocalDate, java.time.format.DateTimeFormatter, java.time.DayOfWeek" %>	
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <%
+	String movieNo = request.getParameter("movieNo");
 	String title = request.getParameter("title");
 	String theaterName = request.getParameter("theaterName");
 	String resDate = request.getParameter("resDate");
@@ -12,6 +16,13 @@
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	LocalDate date = LocalDate.parse(resDate, formatter);
     DayOfWeek dayOfWeek = date.getDayOfWeek();
+    
+    //디버깅
+    System.out.println("seatBooking movieNo: "+ movieNo);
+    System.out.println("seatBooking title: "+ title);
+    System.out.println("seatBooking theaterName: "+ theaterName);
+    System.out.println("seatBooking resDate: "+ resDate);
+    System.out.println("seatBooking time: "+ time);
     
     // 요일을 한글로 변환
     String dayOfWeekInKorean;
@@ -48,23 +59,6 @@
 <head>
     <title>좌석 선택</title>
     <style>
-        .seat {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            margin: 1px;
-            background-color: lightgray;
-            text-align: center;
-            line-height: 30px;
-            cursor: pointer;
-        }
-        .selected {
-            background-color: #CEF279;
-        }
-         .seat:hover {
-            background-color: #F15F5F; /* Hover 상태에서의 색상 변경 */
-        }
-        
         input[type="radio"] {
             display: none;
         }
@@ -90,14 +84,12 @@
            	color: #F6F6F6;
         }
     </style>
-   
 </head>
 <body>
     <h1>좌석 선택</h1>
     <p><%=title%></p>
     <p>영화관: <%=theaterName%></p>
     <p>일시: <%=resDate%>(<%=dayOfWeekInKorean%>) <%=trimmedTime %></p>
-
     <h2>인원/좌석</h2>
     * 최대 8명 선택 가능
     <table>
@@ -187,26 +179,72 @@
     	</tr>
     </table>
     
-    <form action="/auth/saveSeats" method="post" onsubmit="submitSeats(event)">
+    <form action="/updateSeatsInfo" method="POST">
+        <div class="seat-container">
+	            <%
+	                String[] rows = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
+	                int totalSeats = 10;
+	
+	                for (String row : rows) {
+	            %>
+                <div class="seat-row">
+                    <%
+                        for (int i = 1; i <= totalSeats; i++) {
+                            String seatId = row + i;
+                            Map<String, String> result = (Map<String, String>) request.getAttribute("result");
+                            String xo = result.get(seatId);
+                            boolean isDisabled = "O".equals(xo);
+                    %>
+                        <span class="seat <%= isDisabled ? "disabled" : "" %>">
+                            <label>
+                                <input type="checkbox" value="<%=xo%>" name="seats" <%= isDisabled ? "disabled" : "" %>>
+                                <%=seatId%>
+                            </label>
+                        </span>
+                    <%
+                        }
+                    %>
+                    
+                    <%
+				        String[] selectedSeats = (String[]) request.getAttribute("selectedSeats");
+				        if (selectedSeats != null) {
+				            out.println("<ul>");
+				            for (String seat : selectedSeats) {
+				                out.println("<li>" + seat + "</li>");
+				            }
+				            out.println("</ul>");
+				        } else {
+				            out.println("No seats selected.");
+				        }
+				    %>
+                </div>
+	            <%
+	                }
+	            %>
+	        	</div>
+	        <div>
+	            <button type="submit">좌석 선택</button>
+	        </div>
+    </form>
+    
+    <%-- <form action="/auth/saveSeats" method="post" onsubmit="submitSeats(event)">
     <input type="hidden" name="title" value="<%= request.getParameter("title") %>">
     <input type="hidden" name="resDate" value="<%= request.getParameter("resDate") %>">
     <input type="hidden" name="theaterName" value="<%= request.getParameter("theaterName") %>">
     <input type="hidden" name="time" value="<%= request.getParameter("time") %>">
-    <div>
-        
+    <div class="container" id="seats-container">
+        <!-- 좌석이 여기에 생성-->
     </div>
     <br>
-    <input type="submit" value="좌석 선택">
-</form>
-    
-     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</form> --%>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
  		// 모든 라디오 버튼 요소를 가져옴
 	    const defaultRadios = document.querySelectorAll('input[name="default"]'); // default의 모든 값
 	    const teenagerRadios = document.querySelectorAll('input[name="teenager"]'); // teenager의 모든 값
     	
-	 	// 좌석 요소를 가져옴
-        const seats = document.querySelectorAll('.seat');
+	 	/* // 좌석 요소를 가져옴
+        const seats = document.querySelectorAll('.seat'); */
 	    
 	    // 각 라디오 버튼에 클릭 이벤트 리스너 추가
         defaultRadios.forEach(radio => {
@@ -216,11 +254,11 @@
             radio.addEventListener('click', checkSum);
         });
     	
+        // 일반, 청소년 최대 8명까지
         function checkSum() {
             // 선택된 라디오 버튼의 값을 가져옴
             const defaultValue = parseInt(document.querySelector('input[name="default"]:checked').value);
             const teenagerValue = parseInt(document.querySelector('input[name="teenager"]:checked').value);
-
             // 값의 합이 9 이상인 경우 알림 표시
             if (defaultValue + teenagerValue > 8) {
                 alert('최대 8명 선택 가능합니다');
@@ -228,68 +266,6 @@
                 document.querySelector('input[name="default"][value="0"]').checked = true;
                 document.querySelector('input[name="teenager"][value="0"]').checked = true;
             } 
-        }
-        
-        function toggleSeat(seat) {
-            
-            seat.classList.toggle('selected');
-            const checkbox = seat.querySelector('input[type=checkbox]');
-            if(checkbox){
-	            checkbox.checked = !checkbox.checked;  // 체크박스의 'checked' 속성을 현재 상태와 반대로 설정
-				checkbox.disabled = !checkbox.disabled;            	
-            }
-            
-            // 선택 상태가 변경되었을 때 좌석 수 체크
-            checkSum();
-        }
-        
-        
-	    const title = "<%= title %>";
-	    const resDate = "<%= resDate %>";
-	    const theaterName = "<%= theaterName %>";
-	    const time ="<%= time %>";
-    	
-	    console.log('seatBooking title: ', title);
-	    console.log('seatBooking resDate: ', resDate);
-	    console.log('seatBooking theaterName: ', theaterName);
-	    console.log('seatBooking time: ', time);
-	    
-        function toggleSeat(seat) {
-            seat.classList.toggle('selected');
-            const checkbox = seat.querySelector('input[type=checkbox]');
-            checkbox.checked = !checkbox.checked;
-        }
-
-        function submitSeats(event) {
-            event.preventDefault(); // 폼의 기본 제출 동작을 방지
-
-            // 선택된 좌석 정보를 배열로 저장
-            const selectedSeats = Array.from(document.querySelectorAll("input[name='seats']:checked")).map(checkbox => checkbox.value);
-            // 배열을 /로 구분된 문자열로 변환
-            const seatsString = selectedSeats.join('/') + '/';
-            console.log('Seats:', seatsString);
-            const data = JSON.stringify({
-                title: title,
-                res_date: resDate,
-                theater_name: theaterName,
-                time: time,
-                seats: seatsString
-            });
-
-            // AJAX 요청
-            $.ajax({
-                url: "/auth/saveSeats",
-                type: "POST",
-                contentType: "application/json",
-                data: data,
-                success: function(response) {
-                    // 서버 응답 처리
-                    alert(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error("에러 발생:", error);
-                }
-            });
         }
     </script>
 </body>

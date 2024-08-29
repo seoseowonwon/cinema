@@ -70,6 +70,13 @@
 	<!-- 첫 화면에서 예약된 좌석인지 가져오는 쿼리 -->
 	<select id="getSeatInfo" parameterType="String" resultType="Map">
 		SELECT
+			movie_no movieNo, 
+			title, 
+			region, 
+			theater_name theaterName, 
+			date, 
+			res_date resDate, 
+			time,
 			A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, 
 			B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, 
 			C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, 
@@ -82,10 +89,7 @@
 			J1, J2, J3, J4, J5, J6, J7, J8, J9, J10, 
 			K1, K2, K3, K4, K5, K6, K7, K8, K9, K10
 		FROM resv_seats
-		WHERE title = #{title}
-		AND res_date = #{resDate}
-		AND theater_name = #{theaterName}
-		AND time = #{time}
+		WHERE movie_no = #{movieNo}
 	</select>
 	
 	<select id="bringMovieNo" parameterType="String">
@@ -97,4 +101,16 @@
 		AND time = #{time}
 	</select>
 	
+	<select id="checkSeats" parameterType="String">
+		SELECT COUNT(*)
+		FROM resv_seats
+		WHERE movie_no = #{movieNo}
+	</select>
+	
+	<insert id="insertSeats" parameterType="String">
+		INSERT INTO resv_seats (movie_no, title, region, theater_name, DATE, res_date, time)
+		SELECT movie_no, title, region, theater_name, DATE, res_date, time
+		FROM movie_reservation
+		WHERE movie_no = #{movieNo}
+	</insert>
 </mapper>

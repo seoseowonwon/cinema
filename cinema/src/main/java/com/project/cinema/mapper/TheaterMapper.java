@@ -27,11 +27,17 @@ public interface TheaterMapper {
 	int updateSeats(String title, String theaterName, String resDate, String time, String seats);
 	
 	// 첫 화면에서 예약된 자리인지 확인하는 메서드
-	List<Map<String, String>> getSeatInfo(String title, String theaterName, String resDate, String time);
+	Map<String, Object> getSeatInfo(String movieNo);
 	
 	// 오늘 날짜인지 확인. 오늘 날짜가 아닐 경우 DB를 초기화 하기 위함
 	int checkDateResultDelete(String date);
 	
 	// 파라미터값에 해당하는 예약하고자 하는 영화의 id를 가져 옴
 	String bringMovieNo(String title, String theaterName, String resDate, String time);
+	
+	// 해당 movie_no의 영화 좌석 테이블이 있는지 체크
+	int checkSeats(String movieNo);
+	
+	// 테이블에 해당하는 값이 없을 때 INSERT INTO
+	int insertSeats(String movieNo);
 }
