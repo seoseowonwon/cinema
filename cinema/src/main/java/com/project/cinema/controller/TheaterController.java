@@ -102,13 +102,14 @@ public class TheaterController {
 		String theaterName = (String) getMovieNoInfo.get("theater_name");
 		String resDate = (String) getMovieNoInfo.get("res_date");
 		String time = (String) getMovieNoInfo.get("time");
-
+		String result = movieService.bringMovieNo(title, theaterName, resDate, time);
+		
 		log.debug("bringMovieNo title: {}", title);
 		log.debug("bringMovieNo theater_name: {}", theaterName);
 		log.debug("bringMovieNo res_date: {}", resDate);
 		log.debug("bringMovieNo time: {}", time);
-
-		return movieService.bringMovieNo(title, theaterName, resDate, time);
+		log.debug("bringMovieNo result --> {}", result);
+		return result;
 	}
 	
 }

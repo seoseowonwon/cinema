@@ -223,8 +223,8 @@
 	    const defaultRadios = document.querySelectorAll('input[name="default"]'); // default의 모든 값
 	    const teenagerRadios = document.querySelectorAll('input[name="teenager"]'); // teenager의 모든 값
     	
-	 	/* // 좌석 요소를 가져옴
-        const seats = document.querySelectorAll('.seat'); */
+	 	
+	    const selectedSeats = $('input[name="seats"]:checked')
 	    
 	    // 각 라디오 버튼에 클릭 이벤트 리스너 추가
         defaultRadios.forEach(radio => {
@@ -247,6 +247,52 @@
                 document.querySelector('input[name="teenager"][value="0"]').checked = true;
             } 
         }
+        
+        
+        $(document).ready(function() {
+            // 선택된 좌석의 값을 가져옴.
+            function getSelectedSeats() {
+                return $('input[name="seats"]:checked').map(function() {
+                    return $(this).val();
+                }).get();
+            }
+
+            // 좌석 수를 기준으로 체크되지 않은 좌석을 disabled로 변경합니다.
+            function updateSeatAvailability() {
+                const defaultValue = parseInt($('input[name="default"]:checked').val());
+                const teenagerValue = parseInt($('input[name="teenager"]:checked').val());
+                const maxSeats = defaultValue + teenagerValue;
+
+                const selectedSeats = getSelectedSeats();
+                
+                if (selectedSeats.length >= maxSeats) {
+                    // 체크된 좌석만 남기고 나머지 좌석을 disabled로 설정합니다.
+                    $('input[name="seats"]').each(function() {
+                        if ($(this).is(':checked')) {
+                            $(this).prop('disabled', false);
+                            $(this).closest('.seat').removeClass('disabled');
+                        } else {
+                            $(this).prop('disabled', true);
+                            $(this).closest('.seat').addClass('disabled');
+                        }
+                    });
+                } else {
+                    // 초과하지 않는 경우 모든 좌석을 활성화합니다.
+                    $('input[name="seats"]').prop('disabled', false);
+                    $('.seat').removeClass('disabled');
+                }
+            }
+            
+            // 각 라디오 버튼 클릭 시 좌석 조정
+            $('input[name="default"], input[name="teenager"]').on('change', function() {
+                updateSeatAvailability();
+            });
+
+            // 체크박스 클릭 시 좌석 조정
+            $('input[name="seats"]').on('change', function() {
+                updateSeatAvailability();
+            });
+        });
     </script>
 </body>
 </html>

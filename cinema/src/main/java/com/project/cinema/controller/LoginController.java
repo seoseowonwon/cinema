@@ -32,7 +32,7 @@ public class LoginController {
 			
 			log.debug("Cinema controller id --> "+loginDto.getId());
 			log.debug("Cinema controller userPassword --> "+loginDto.getPassword());
-			return "redirect:/auth/on";
+			return "redirect:/public/main";
 			
 		} else {
 			return "redirect:/public/login";

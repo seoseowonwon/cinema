@@ -7,6 +7,65 @@
 <head>
 <meta charset="UTF-8">
 <title>빠져 보다, cinema</title>
+<style>
+/* 부모 컨테이너 설정 */
+        .parent {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* 각 섹션의 제목 스타일 */
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* 섹션 기본 스타일 (영화, 극장, 일시) */
+        .wrap, .re-theater, .mon-time {
+            flex-basis: 30%; /* 각 섹션의 너비를 30%로 설정 */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box; /* 패딩을 포함한 넓이 계산 */
+        }
+
+        /* 섹션 사이 간격 */
+        .wrap, .re-theater {
+            margin-right: 20px;
+        }
+
+        /* 마지막 섹션은 오른쪽 간격 제거 */
+        .mon-time {
+            margin-right: 0;
+        }
+
+        /* 날짜와 시간 선택 영역 스타일 */
+        .now-day {
+            margin-bottom: 10px;
+        }
+
+        .time-select h4 {
+            margin-bottom: 5px;
+        }
+
+        /* 반응형 설정 */
+        @media (max-width: 768px) {
+            .parent {
+                flex-direction: column;
+            }
+
+            .wrap, .re-theater, .mon-time {
+                flex-basis: auto;
+                margin-right: 0;
+                margin-bottom: 20px;
+                width: 100%; /* 작은 화면에서는 각 섹션이 100% 너비로 나열 */
+            }
+        }
+    </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	$(function() {
@@ -70,7 +129,7 @@
 				var $data = $(data).find("boxOfficeResult > dailyBoxOfficeList > dailyBoxOffice");
 				if ($data.length > 0) {
 					var table = $("<table/>").attr("class", "table"); // css와 테이블 선언
-					var thead = $("<thead/>").append($("<tr/>")).append($("<th/>").html("&nbsp;&nbsp;영화 제목"),$("<th/>").html("&nbsp;&nbsp;영화 포스터"));
+					var thead = $("<thead/>");
 					var tbody = $("<tbody/>"); // tody선언
 					
 					// 랜덤 region 선택을 위한 locations 초기화
@@ -605,21 +664,40 @@
 </head>
 <body>
 	<a href="/public/login">로그인</a>
-	<h3>영화 메인</h3>
-	<div class="wrap"></div>
-	<hr>
-	<h3>지역</h3>
-	<div class="region"></div>
-	<hr>
-	<h3>영화관</h3>
-	<div class="theater"></div>
-	<hr>
-	<h3>날짜</h3>
-	<div class="month"></div>
-	<div class="now-day"></div>
-	<hr>
-	<h3>시간</h3>
-	<div class="time-select"></div>
-	<hr>
+	<div class="parent">
+    <!-- 영화 섹션 -->
+    <div class="wrap">
+        <div class="title">영화</div>
+        <!-- 영화 목록이나 콘텐츠를 여기에 추가 -->
+    </div>
+
+    <!-- 극장 섹션 -->
+    <div>
+        <div class="title">극장</div>
+        <div class="re-theater">
+            <div class="region">
+                <!-- 지역 선택 섹션 -->
+            </div>
+            <div class="theater">
+                <!-- 극장 목록 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 일시 섹션 -->
+    <div>
+        <div class="title">일시</div>
+        <div class="mon-time">
+            <div class="now-day">
+                <!-- 현재 날짜 -->
+            </div>
+            <div class="time-select">
+                <h4>시간</h4>
+                <!-- 시간 선택 -->
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
