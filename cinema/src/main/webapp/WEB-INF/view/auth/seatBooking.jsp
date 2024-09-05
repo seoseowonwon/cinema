@@ -92,95 +92,95 @@
     <p>일시: <%=resDate%>(<%=dayOfWeekInKorean%>) <%=trimmedTime %></p>
     <h2>인원/좌석</h2>
     * 최대 8명 선택 가능
-    <table>
-    	<tr>
-    		<td>일반</td>
-    		<td>
-    			<label>
-                    <input type="radio" value="0" name="default" checked>
-                    <span class="custom-radio">0</span>
-                </label>
-    			<label>
-                    <input type="radio" value="1" name="default">
-                    <span class="custom-radio">1</span>
-                </label>
-                <label>
-                    <input type="radio" value="2" name="default">
-                    <span class="custom-radio">2</span>
-                </label>
-                <label>
-                    <input type="radio" value="3" name="default">
-                    <span class="custom-radio">3</span>
-                </label>
-                <label>
-                    <input type="radio" value="4" name="default">
-                    <span class="custom-radio">4</span>
-                </label>
-                <label>
-                    <input type="radio" value="5" name="default">
-                    <span class="custom-radio">5</span>
-                </label>
-                <label>
-                    <input type="radio" value="6" name="default">
-                    <span class="custom-radio">6</span>
-                </label>
-                <label>
-                    <input type="radio" value="7" name="default">
-                    <span class="custom-radio">7</span>
-                </label>
-                <label>
-                    <input type="radio" value="8" name="default">
-                    <span class="custom-radio">8</span>
-                </label>
-    		</td>
-    	</tr>
-    	<tr>
-    		<td>청소년&nbsp;</td>
-    		<td>
-    			<label>
-                    <input type="radio" value="0" name="teenager" checked>
-                    <span class="custom-radio">0</span>
-                </label>
-    			<label>
-                    <input type="radio" value="1" name="teenager">
-                    <span class="custom-radio">1</span>
-                </label>
-                <label>
-                    <input type="radio" value="2" name="teenager">
-                    <span class="custom-radio">2</span>
-                </label>
-                <label>
-                    <input type="radio" value="3" name="teenager">
-                    <span class="custom-radio">3</span>
-                </label>
-                <label>
-                    <input type="radio" value="4" name="teenager">
-                    <span class="custom-radio">4</span>
-                </label>
-                <label>
-                    <input type="radio" value="5" name="teenager">
-                    <span class="custom-radio">5</span>
-                </label>
-                <label>
-                    <input type="radio" value="6" name="teenager">
-                    <span class="custom-radio">6</span>
-                </label>
-                <label>
-                    <input type="radio" value="7" name="teenager">
-                    <span class="custom-radio">7</span>
-                </label>
-                <label>
-                    <input type="radio" value="8" name="teenager">
-                    <span class="custom-radio">8</span>
-                </label>
-    		</td>
-    	</tr>
-    	<tr>
-    	</tr>
-    </table>
-    
-    <form action="/updateSeatsInfo" method="POST">
+    <form action="/auth/payment" method="POST">
+	    <table>
+	    	<tr>
+	    		<td>일반</td>
+	    		<td>
+	    			<label>
+	                    <input type="radio" value="0" name="default" checked>
+	                    <span class="custom-radio">0</span>
+	                </label>
+	    			<label>
+	                    <input type="radio" value="1" name="default">
+	                    <span class="custom-radio">1</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="2" name="default">
+	                    <span class="custom-radio">2</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="3" name="default">
+	                    <span class="custom-radio">3</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="4" name="default">
+	                    <span class="custom-radio">4</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="5" name="default">
+	                    <span class="custom-radio">5</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="6" name="default">
+	                    <span class="custom-radio">6</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="7" name="default">
+	                    <span class="custom-radio">7</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="8" name="default">
+	                    <span class="custom-radio">8</span>
+	                </label>
+	    		</td>
+	    	</tr>
+	    	<tr>
+	    		<td>청소년&nbsp;</td>
+	    		<td>
+	    			<label>
+	                    <input type="radio" value="0" name="teenager" checked>
+	                    <span class="custom-radio">0</span>
+	                </label>
+	    			<label>
+	                    <input type="radio" value="1" name="teenager">
+	                    <span class="custom-radio">1</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="2" name="teenager">
+	                    <span class="custom-radio">2</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="3" name="teenager">
+	                    <span class="custom-radio">3</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="4" name="teenager">
+	                    <span class="custom-radio">4</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="5" name="teenager">
+	                    <span class="custom-radio">5</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="6" name="teenager">
+	                    <span class="custom-radio">6</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="7" name="teenager">
+	                    <span class="custom-radio">7</span>
+	                </label>
+	                <label>
+	                    <input type="radio" value="8" name="teenager">
+	                    <span class="custom-radio">8</span>
+	                </label>
+	    		</td>
+	    	</tr>
+	    	<tr>
+	    	</tr>
+	    </table>
         <div class="seat-container">
+        	<input type="hidden" value="<%=movieNo%>" name="movieNo">
 	            <%
 	                String[] rows = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
 	                int totalSeats = 10;
@@ -197,46 +197,26 @@
                     %>
                         <span class="seat <%= isDisabled ? "disabled" : "" %>">
                             <label>
-                                <input type="checkbox" value="<%=xo%>" name="seats" <%= isDisabled ? "disabled" : "" %>>
+                                <input type="checkbox" value="<%=seatId%>" name="seats" <%= isDisabled ? "disabled" : "" %>>
                                 <%=seatId%>
                             </label>
                         </span>
+                        
                     <%
                         }
                     %>
                     
-                    <%
-				        String[] selectedSeats = (String[]) request.getAttribute("selectedSeats");
-				        if (selectedSeats != null) {
-				            out.println("<ul>");
-				            for (String seat : selectedSeats) {
-				                out.println("<li>" + seat + "</li>");
-				            }
-				            out.println("</ul>");
-				        } else {
-				            out.println("No seats selected.");
-				        }
-				    %>
                 </div>
 	            <%
 	                }
 	            %>
 	        	</div>
+	        	
 	        <div>
 	            <button type="submit">좌석 선택</button>
 	        </div>
     </form>
-    
-    <%-- <form action="/auth/saveSeats" method="post" onsubmit="submitSeats(event)">
-    <input type="hidden" name="title" value="<%= request.getParameter("title") %>">
-    <input type="hidden" name="resDate" value="<%= request.getParameter("resDate") %>">
-    <input type="hidden" name="theaterName" value="<%= request.getParameter("theaterName") %>">
-    <input type="hidden" name="time" value="<%= request.getParameter("time") %>">
-    <div class="container" id="seats-container">
-        <!-- 좌석이 여기에 생성-->
-    </div>
-    <br>
-</form> --%>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
  		// 모든 라디오 버튼 요소를 가져옴

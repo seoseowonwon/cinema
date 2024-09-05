@@ -30,7 +30,7 @@ public interface TheaterMapper {
 	Map<String, Object> getSeatInfo(String movieNo);
 	
 	// 오늘 날짜인지 확인. 오늘 날짜가 아닐 경우 DB를 초기화 하기 위함
-	int checkDateResultDelete(String date);
+	int checkDateResult(String date);
 	
 	// 파라미터값에 해당하는 예약하고자 하는 영화의 id를 가져 옴
 	String bringMovieNo(String title, String theaterName, String resDate, String time);
@@ -40,4 +40,11 @@ public interface TheaterMapper {
 	
 	// 테이블에 해당하는 값이 없을 때 INSERT INTO
 	int insertSeats(String movieNo);
+	
+	// 결제 시, 좌석 업데이트
+	int updateResvSeats(List<String> selectedSeats, String movieNo);
+	
+	// 로그인 체크
+	int checkLogin(String id, String password);
+	
 }

@@ -24,10 +24,16 @@ public class LoginController {
 		
 	@PostMapping("/public/login")
 	public String login(HttpSession session, LoginDto loginDto) {
-		int pass = loginService.bringMember(loginDto);
+		int pass = loginService.bringMember(loginDto, session);
 		log.debug("pass ---> "+pass);
 		if(pass == 1) { // 로그인 됐으면 1 아니면 2로 이동
+			session.setAttribute("userId", loginDto.getId());
+			session.setAttribute("userPassword", loginDto.getPassword());
+			
+			log.debug("Cinema controller id --> "+loginDto.getId());
+			log.debug("Cinema controller userPassword --> "+loginDto.getPassword());
 			return "redirect:/auth/on";
+			
 		} else {
 			return "redirect:/public/login";
 		}

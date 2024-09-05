@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h1>로그인했을 때</h1>
-	${loginUser}님 반갑습니다
-	<a href="${pageContext.request.contextPath }/logout">로그아웃</a>
+	${userId}님 반갑습니다
+	<a href="${pageContext.request.contextPath}/logout">로그아웃</a>
 </body>
 </html>

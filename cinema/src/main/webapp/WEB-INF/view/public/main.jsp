@@ -28,7 +28,7 @@
 		
 		// 하루가 지난 데이터면 삭제하고자 함
 		$.ajax({
-			url : "/api/theater/checkDateResultDelete",
+			url : "/api/theater/checkDateResult",
 			method : "GET",
 			data : {
 				date : date_result
@@ -601,11 +601,10 @@
 	        }
 	    })
 	});
-	
-	
 </script>
 </head>
 <body>
+	<a href="/public/login">로그인</a>
 	<h3>영화 메인</h3>
 	<div class="wrap"></div>
 	<hr>

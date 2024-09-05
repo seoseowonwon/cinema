@@ -5,9 +5,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+	window.onload = function() {
+	    // ${loginError}는 서버에서 전달된 플래시 속성 값을 포함합니다
+	    var loginError = '${loginError}';
+	    if (loginError) {
+	        alert(loginError);
+	    }
+	};
+</script>
 </head>
 <body>
-	<h1>현재 접속자 : ${currentCnt}</h1>
+	<a href="/public/main">메인 화면</a>
 	<h1>로그인 안 했을 때</h1>
 	<form method="post" action="${pageContext.request.contextPath}/public/login">
 		<div>

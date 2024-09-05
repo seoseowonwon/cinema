@@ -18,7 +18,7 @@
 		)
 	</insert>
 	
-	<select id="checkDateResultDelete" parameterType="String">
+	<select id="checkDateResult" parameterType="String">
 		SELECT EXISTS(SELECT date FROM movie_reservation WHERE date = #{date});
 	</select>
 	
@@ -113,4 +113,21 @@
 		FROM movie_reservation
 		WHERE movie_no = #{movieNo}
 	</insert>
+	
+	<update id="updateResvSeats">
+	    UPDATE resv_seats
+	    <set>
+	        <foreach collection="selectedSeats" item="seat" separator=",">
+	            ${seat} = 'O'
+	        </foreach>
+	    </set>
+	    WHERE movie_no = #{movieNo}
+	</update>
+	
+	<select id="checkLogin" parameterType="string">
+		SELECT COUNT(id)
+		FROM member 
+		WHERE id = #{id} AND PASSWORD= #{password}
+	</select>
+
 </mapper>

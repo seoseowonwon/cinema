@@ -12,8 +12,7 @@ public interface TheaterService {
 	// 이미 존재하는 제목인지 체크
 	int checkTitle(String title);
 	
-	// 오늘 날짜인지 확인. 오늘 날짜가 아닐 경우 DB를 초기화 하기 위함
-	int checkDateResultDelete(String date);
+	
 	
 	// 버튼 누를때마다 db 정보 초기화
 	int deleteTheater();
@@ -44,4 +43,13 @@ public interface TheaterService {
 	
 	// 테이블에 해당하는 값이 없을 때 INSERT INTO
 	int insertSeats(String movieNo);
+	
+	// 결제 시, 좌석 업데이트
+	int updateResvSeats(List<String> selectedSeats, String movieNo);
+	
+	// 오늘 날짜인지 확인. 오늘 날짜가 아닐 경우 DB를 초기화 하기 위함
+	int checkDateResult(String date);
+	
+	// 로그인
+	int checkLogin(String id, String password);
 }

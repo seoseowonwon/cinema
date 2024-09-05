@@ -78,11 +78,6 @@ public class MovieService implements TheaterService{
 		return theaterMapper.checkTitle(title);
 	}
 
-	// 오늘 날짜인지 확인. 오늘 날짜가 아닐 경우 DB를 초기화 하기 위함
-	@Override
-	public int checkDateResultDelete(String date) {
-		return theaterMapper.checkDateResultDelete(date);
-	}
 
 	// 파라미터값에 해당하는 예약하고자 하는 영화의 id를 가져 옴
 	@Override
@@ -100,6 +95,24 @@ public class MovieService implements TheaterService{
 	@Override
 	public int insertSeats(String movieNo) {
 		return theaterMapper.insertSeats(movieNo);
+	}
+
+
+	@Override
+	public int updateResvSeats(List<String> selectedSeats, String movieNo) {
+		return theaterMapper.updateResvSeats(selectedSeats, movieNo);
+	}
+
+	// 오늘 날짜인지 확인. 오늘 날짜가 아닐 경우 DB를 초기화 하기 위함
+	@Override
+	public int checkDateResult(String date) {
+		return theaterMapper.checkDateResult(date);
+	}
+
+	// 로그인 체크
+	@Override
+	public int checkLogin(String id, String password) {
+		return theaterMapper.checkLogin(id, password);
 	}
 	
 	

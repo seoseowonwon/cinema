@@ -42,6 +42,12 @@ public class TheaterController {
 		return result > 0 ? "Success" : "fail";
 	}
 
+	@GetMapping("/api/theater/checkDateResult")
+	public int checkDateResult(String date) {
+		return movieService.checkDateResult(date);
+	}
+	
+	
 	@GetMapping("/api/theater/checkTitle")
 	public int checkTitle(String title) {
 		log.debug("checkTitle title: {}", title);
@@ -88,14 +94,6 @@ public class TheaterController {
 
 		return movieService.updateResDate(resDate, theaterName, time);
 	}
-	
-	// 예매 좌석을 올려 놓음
-	@PostMapping("/updateSeatsInfo")
-	public int updateSeatsInfo(@RequestParam(value = "seats", required = false) String[] seats) {
-		ModelAndView modelAndView = new ModelAndView("selectedSeats");
-        modelAndView.addObject("selectedSeats", seats);
-        return modelAndView;
-	}
 
 	// 파라미터값에 해당되는 예약하고자 하는 영화의 id를 가져 옴
 	@PostMapping("/api/theater/bringMovieNo")
@@ -112,4 +110,5 @@ public class TheaterController {
 
 		return movieService.bringMovieNo(title, theaterName, resDate, time);
 	}
+	
 }
