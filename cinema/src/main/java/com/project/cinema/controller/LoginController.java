@@ -42,7 +42,7 @@ public class LoginController {
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/public/login";
+		return "redirect:/public/main";
 	}
 	
 	@GetMapping("/auth/on") // redirect:/auth/on 받으면 GetMapping으로 화면 전환.
